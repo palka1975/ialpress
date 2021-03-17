@@ -1,0 +1,21 @@
+#form-preiscrizione .checkbox label small,
+#form-preiscrizione-speciale .checkbox label small,
+#form-informazioni .checkbox label small {
+	position: absolute;
+	top: 23px;
+}
+.form-group.has-error small.has-error {
+	color: #a94442;
+}
+@media (max-width: 540px) {
+	#form-preiscrizione .checkbox,
+	#form-preiscrizione-speciale .checkbox,
+	#form-informazioni .checkbox {
+		margin-bottom: 30px;
+	}
+	#form-preiscrizione-speciale .checkbox label small,
+	#form-preiscrizione .checkbox label small,
+	#form-informazioni .checkbox label small {
+		top: 46px;
+	}
+}
