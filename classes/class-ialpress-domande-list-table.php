@@ -49,7 +49,15 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
             case 'email':
             case 'telefono':
             case 'corso':
+            case 'sede_corso':
                 return $item[$column_name];
+                break;
+            case 'tipologia':
+                if ( ! empty( $item[$column_name] ) ) {
+                    $_cont = '<a href="' . add_query_arg( 'f_tipologia', $item[$column_name]->term_id ) . '">' . $item[$column_name]->name . '</a>';
+                    return $_cont;
+                }
+                else return '-';
                 break;
             case 'updated':
                 return date('d/m/Y H:i', strtotime($item[$column_name]));
@@ -98,7 +106,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
     /** ************************************************************************
      * REQUIRED if displaying checkboxes or using bulk actions! The 'cb' column
      * is given special treatment when columns are processed. It ALWAYS needs to
-     * have it's own method.
+     * have its own method.
      * 
      * @see WP_List_Table::::single_row_columns()
      * @param array $item A singular item (one full row's worth of data)
@@ -128,13 +136,15 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_columns(){
         $columns = array(
-            'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'title'     => 'Cognome e Nome',
-            'indirizzo' => 'Indirizzo',
-            'email'     => 'Email',
-            'telefono'  => 'Telefono',
-            'corso'     => 'Corso',
-            'updated'   => 'Ultima modifica',
+            'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
+            'title'         => 'Cognome e Nome',
+            'indirizzo'     => 'Indirizzo',
+            'email'         => 'Email',
+            'telefono'      => 'Telefono',
+            'corso'         => 'Corso',
+            'sede_corso'    => 'Sede Corso',
+            'tipologia'     => 'Tipologia Corso',
+            'updated'       => 'Data Preiscrizione',
         );
         return $columns;
     }
@@ -179,9 +189,67 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
      **************************************************************************/
     function get_bulk_actions() {
         $actions = array(
-            // 'delete'    => 'Delete'
+            'archive'    => 'Archivia'
         );
         return $actions;
+    }
+
+    /** ************************************************************************
+     * Gets the list of views available on this table.
+     *
+     * The format is an associative array:
+     * - `'id' => 'link'`
+     *
+     **************************************************************************/
+    function get_views() {
+        $views = array();
+        $_ialman = new Ialman_Ops();
+        $class = '';
+
+        // tutte
+        $args = array(
+            'page' => 'ialpress-domande',
+        );
+        $count = $_ialman->countCurrentDomande();
+        if ( !isset( $_REQUEST['dom_status'] ) OR empty( $_REQUEST['dom_status'] ) ) $class = 'current';
+        $views['all'] = $this->get_edit_link( $args, 'Recenti <span class="count">('.$count.')</span>', $class );
+
+        // archiviate
+        $args = array(
+            'page' => 'ialpress-domande',
+            'dom_status' => 'archived',
+        );
+        $count = $_ialman->countCurrentDomande( true );
+        if ( ! empty( $_REQUEST['dom_status'] ) AND $_REQUEST['dom_status']=='archived' ) $class = 'current';
+        else $class = '';
+        $views['archived'] = $this->get_edit_link( $args, 'Archiviate <span class="count">('.$count.')</span>', $class );
+
+        return $views;
+    }
+
+    protected function get_edit_link( $args, $label, $class = '' ) {
+        $url = add_query_arg( $args, 'admin.php' );
+
+        $class_html   = '';
+        $aria_current = '';
+        if ( ! empty( $class ) ) {
+            $class_html = sprintf(
+                ' class="%s"',
+                esc_attr( $class )
+            );
+
+            if ( 'current' === $class ) {
+                $aria_current = ' aria-current="page"';
+            }
+        }
+
+        return sprintf(
+            '<a href="%s"%s%s>%s</a>',
+            esc_url( $url ),
+            $class_html,
+            $aria_current,
+            $label
+        );
     }
 
 
@@ -195,8 +263,18 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
     function process_bulk_action() {
         
         //Detect when a bulk action is being triggered...
-        if( 'delete'===$this->current_action() ) {
-            wp_die('Items deleted (or they would be if we had items to delete)!');
+        if( 'archive'===$this->current_action() ) {
+
+            // security check!
+            if ( isset( $_POST['_wpnonce'] ) && ! empty( $_POST['_wpnonce'] ) ) {
+                $nonce  = filter_input( INPUT_POST, '_wpnonce', FILTER_SANITIZE_STRING );
+                $action = 'bulk-' . $this->_args['plural'];
+                if ( ! wp_verify_nonce( $nonce, $action ) ) wp_die( 'Nope! Security check failed!' );
+            }
+            // archive selected elements
+            $selected_domande = $_REQUEST['mii_domanda'];
+            $_ialman = new Ialman_Ops();
+            $_ialman->archiveDomande( $selected_domande );
         }
         
     }
@@ -226,10 +304,14 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
         $this->_column_headers = array($columns, $hidden, $sortable);
         $this->process_bulk_action();
         
-        $args = array();
+        $args = array(
+            'archived' => 0,
+        );
+        if ( ! empty( $_REQUEST['dom_status'] ) AND $_REQUEST['dom_status']=='archived' ) $args['archived'] = 1;
 
         // CAMPO RICERCA
         $s = !empty($_REQUEST['s']) ? $_REQUEST['s'] : false;
+        $filtra_tipologia = !empty($_REQUEST['f_tipologia']) ? $_REQUEST['f_tipologia'] : false;
         if ( !empty($s) ) {
             $args['s'] = $s;
         } else {
@@ -251,16 +333,39 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
         $results = $_ialman->getDomande( $args );
         $data = array();
         foreach ($results as $row) {
+            $insert = true;
             $ind = $row->indirizzo . '<br>' . $row->cap . ' ' . $row->recapito . ' (' . $row->prov . ')<br>' . $row->stato;
-            $data[] = array(
-                'ID' => $row->ID,
-                'title' => $row->cognome . ' ' . $row->nome,
-                'indirizzo' => $ind,
-                'email' => $row->mail,
-                'telefono' => $row->telefono,
-                'corso' => $row->descrizione,
-                'updated' => $row->update_timestamp,
-            );
+            $corso = $_ialman->getImportedCommessa( $row->id_corso );
+            $tipologia_corsi = false;
+            if ( ! empty( $corso ) OR $row->id_corso=='73594' ) {
+                if ( $row->id_corso=='73594' ) {
+                    // for testing purposes only
+                    $tipologia_corsi = get_term( 16, 'tipologia_corsi' );
+                    $sede_corso = get_term( 22, 'sede_corso' );
+                } else {
+                    $terms = get_the_terms( $corso->ID, 'tipologia_corsi' );
+                    $tipologia_corsi = $terms[0];
+
+                    $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
+                    $sede_corso = $terms_sedi[0];
+                }
+            }
+            if ( ! empty( $filtra_tipologia ) ) {
+                if ( $tipologia_corsi->term_id != $filtra_tipologia ) $insert = false;
+            }
+            if ( $insert ) {
+                $data[] = array(
+                    'ID' => $row->ID,
+                    'title' => $row->cognome . ' ' . $row->nome,
+                    'indirizzo' => $ind,
+                    'email' => $row->mail,
+                    'telefono' => $row->telefono,
+                    'corso' => $row->descrizione,
+                    'sede_corso' => $sede_corso->name,
+                    'tipologia' => $tipologia_corsi,
+                    'updated' => $row->update_timestamp,
+                );
+            }
         }
         
         $current_page = $this->get_pagenum();
@@ -270,9 +375,9 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
         $this->items = $data;
         
         $this->set_pagination_args( array(
-            'total_items' => $total_items,                  //WE have to calculate the total number of items
-            'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-            'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
+            'total_items' => $total_items,                  // total number of items
+            'per_page'    => $per_page,                     // how many items to show on a page
+            'total_pages' => ceil($total_items/$per_page)   // total number of pages
         ) );
     }
 
@@ -282,12 +387,26 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
         $date_to = '';
         if ( !empty($_REQUEST['date_from']) ) $date_from = $_REQUEST['date_from'];
         if ( !empty($_REQUEST['date_to']) ) $date_to = $_REQUEST['date_to'];
+        $filtra_tipologia = !empty($_REQUEST['f_tipologia']) ? $_REQUEST['f_tipologia'] : false;
+
+        $tipologie = get_terms( array(
+            'taxonomy' => 'tipologia_corsi',
+            'hide_empty' => false,
+        ) );
+        $select_html = '<select name="f_tipologia" id="f_tipologia"><option value="">Scegli..</option>';
+        foreach ($tipologie as $tipo) {
+            $select_html .= '<option value="' . $tipo->term_id . '"';
+            if ( ! empty( $filtra_tipologia ) AND $filtra_tipologia==$tipo->term_id ) $select_html .= ' selected="selected"';
+            $select_html .= '>' . $tipo->name . '</option>';
+        }
+        $select_html .= '</select>';
         switch ( $which )
         {
             case 'top':
                 echo '<div class="alignleft actions">
                     <label class="" for="dateFrom">Da: </label><input type="date" id="dateFrom" name="date_from" value="' . $date_from . '">
                     <label class="" for="dateTo">A: </label><input type="date" id="dateTo" name="date_to" value="' . $date_to . '">
+                    <label class="" for="f_tipologia">Tipologia Corso: </label> ' . $select_html . '
                     <input type="hidden" name="lang" value="it">
 
                     <input type="submit" name="filter_action" id="post-query-submit" class="button" value="Filtra">

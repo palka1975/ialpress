@@ -1,193 +1,10 @@
 <?php
 
-class Ialpress_Richinfo
+class Ialpress_Richinfo extends Ialpress_Cpt_Helper
 {
-	private $_to_send = array(
-		// 'andrea.varnier@gmail.com',
-		'info@civiform.it',
-		'segreteria@civiform.it',
-	);
-
-	private $sessi = array('M', 'F');
-	private $province = array(
-		"EE"=>"STATO ESTERO",
-		"AG"=>"AGRIGENTO",
-		"AL"=>"ALESSANDRIA",
-		"AN"=>"ANCONA",
-		"AO"=>"AOSTA",
-		"AR"=>"AREZZO",
-		"AP"=>"ASCOLI PICENO",
-		"AT"=>"ASTI",
-		"AV"=>"AVELLINO",
-		"BA"=>"BARI",
-		"BL"=>"BELLUNO",
-		"BN"=>"BENEVENTO",
-		"BG"=>"BERGAMO",
-		"BI"=>"BIELLA",
-		"BO"=>"BOLOGNA",
-		"BZ"=>"BOLZANO-BOZEN",
-		"BS"=>"BRESCIA",
-		"BR"=>"BRINDISI",
-		"CA"=>"CAGLIARI",
-		"CL"=>"CALTANISSETTA",
-		"CB"=>"CAMPOBASSO",
-		"CE"=>"CASERTA",
-		"CT"=>"CATANIA",
-		"CZ"=>"CATANZARO",
-		"CH"=>"CHIETI",
-		"CO"=>"COMO",
-		"CS"=>"COSENZA",
-		"CR"=>"CREMONA",
-		"KR"=>"CROTONE",
-		"CN"=>"CUNEO",
-		"EN"=>"ENNA",
-		"FE"=>"FERRARA",
-		"FI"=>"FIRENZE",
-		"FG"=>"FOGGIA",
-		"FO"=>"FORLI'-CESENA",
-		"FR"=>"FROSINONE",
-		"GE"=>"GENOVA",
-		"GO"=>"GORIZIA",
-		"GR"=>"GROSSETO",
-		"IM"=>"IMPERIA",
-		"IS"=>"ISERNIA",
-		"AQ"=>"L'AQUILA",
-		"SP"=>"LA SPEZIA",
-		"LT"=>"LATINA",
-		"LE"=>"LECCE",
-		"LC"=>"LECCO",
-		"LI"=>"LIVORNO",
-		"LO"=>"LODI",
-		"LU"=>"LUCCA",
-		"MC"=>"MACERATA",
-		"MN"=>"MANTOVA",
-		"MS"=>"MASSA-CARRARA",
-		"MT"=>"MATERA",
-		"ME"=>"MESSINA",
-		"MI"=>"MILANO",
-		"MO"=>"MODENA",
-		"NA"=>"NAPOLI",
-		"NO"=>"NOVARA",
-		"NU"=>"NUORO",
-		"OR"=>"ORISTANO",
-		"PD"=>"PADOVA",
-		"PA"=>"PALERMO",
-		"PR"=>"PARMA",
-		"PV"=>"PAVIA",
-		"PG"=>"PERUGIA",
-		"PU"=>"PESARO E URBINO",
-		"PE"=>"PESCARA",
-		"PC"=>"PIACENZA",
-		"PI"=>"PISA",
-		"PT"=>"PISTOIA",
-		"PN"=>"PORDENONE",
-		"PZ"=>"POTENZA",
-		"PO"=>"PRATO",
-		"RG"=>"RAGUSA",
-		"RA"=>"RAVENNA",
-		"RC"=>"REGGIO CALABRIA",
-		"RE"=>"REGGIO EMILIA",
-		"RI"=>"RIETI",
-		"RN"=>"RIMINI",
-		"RM"=>"ROMA",
-		"RO"=>"ROVIGO",
-		"SA"=>"SALERNO",
-		"SS"=>"SASSARI",
-		"SV"=>"SAVONA",
-		"SI"=>"SIENA",
-		"SR"=>"SIRACUSA",
-		"SO"=>"SONDRIO",
-		"TA"=>"TARANTO",
-		"TE"=>"TERAMO",
-		"TR"=>"TERNI",
-		"TO"=>"TORINO",
-		"TP"=>"TRAPANI",
-		"TN"=>"TRENTO",
-		"TV"=>"TREVISO",
-		"TS"=>"TRIESTE",
-		"UD"=>"UDINE",
-		"VA"=>"VARESE",
-		"VE"=>"VENEZIA",
-		"VB"=>"VERBANO-CUSIO-OSSOLA",
-		"VC"=>"VERCELLI",
-		"VR"=>"VERONA",
-		"VV"=>"VIBO VALENTIA",
-		"VI"=>"VICENZA",
-		"VT"=>"VITERBO",
-	);
-	private $titoli_studio = array(
-		"Nessun titolo",
-		"Licenza elementare",
-		"Diploma scuola media inferiore o equipollente",
-		"Qualifica professionale",
-		"Diploma scuola media superiore o equipollente",
-		"Laurea triennale o equipollente",
-		"Laurea specialistica o vecchio ordinamento o equipollente",
-	);
-	private $titoli_studio_isp = array(
-		"NESSUN TITOLO",
-		"LICENZA ELEMENTARE",
-		"DIPLOMA SCUOLA MEDIA INFERIORE O EQUIPOLLENTE",
-		"QUALIFICA PROFESSIONALE",
-		"DIPLOMA SCUOLA MEDIA SUPERIORE O EQUIPOLLENTE",
-		"LAUREA TRIENNALE O EQUIPOLLENTE",
-		"LAUREA SPECIALISTICA O VECCHIO ORDINAMENTO O EQUIPOLLENTE",
-	);
-	private $stato_occupazionale = array(
-		"Studente",
-		"Inattivo",
-		"Occupato",
-		"Occupato a rischio disoccupazione",
-		"Disoccupato / non occupato",
-		"In CIG / mobilità",
-	);
-	private $stato_occupazionale_isp = array(
-		"EDUCATORE",
-		"ASSISTENTE SOCIALE",
-		"OPERATORE IN COMUNITÀ",
-		"DISOCCUPATO",
-		"ALTRO",
-	);
-	private $ente_appartenenza_isp = array(
-		"PUBBLICA AMMINISTRAZIONE",
-		"ENTE PRIVATO/AZIENDA",
-	);
-	private $come_conosciuto = array(
-		"Articoli / pubblicità su giornali",
-		"Manifesti pubblicitari",
-		"Radio",
-		"Informagiovani, Centri per l&#039;impiego, Centri Regionali di Orientamento",
-		"Parenti/amici/conoscenti",
-		"Sito o Segreteria di Civiform",
-		"Contattato da Civiform (telefonata, SMS, e-mail, lettera)",
-		"Facebook/Twitter",
-		"Altro",
-	);
-
-	private $testo_info_privacy = "INFORMATIVA E CONSENSO PER IL TRATTAMENTO DEI DATI PERSONALI
-		(artt.13 e 23, d.lgs. n.196/2003)
-		Il decreto legislativo n.196/2003 prevede che il trattamento dei dati personali si svolga nel rispetto dei diritti, delle libertà fondamentali, nonché della dignità delle persone, con particolare riferimento alla riservatezza ed all'identità personale. Il trattamento dei Suoi dati personali avverrà, conformemente a quanto previsto dalla legge, secondo criteri di correttezza, liceità, adeguatezza e trasparenza, tutelando la Sua riservatezza e i Suoi diritti.
-		Ai sensi dell'art.13 del d.lgs. n.196/2003, La informiamo quindi che:
-		Il trattamento ha le seguenti finalità: trattare e conservare i dati richiesti da Civiform soc. coop. sociale per l'invio della news letter ed altre comunicazioni relative alle iscrizioni on-line dei corsi di formazione;
-		Il trattamento sarà effettuato con le seguenti modalità: i dati raccolti verranno trasferiti in archivio elettronico oltre che conservati così come vengono forniti.
-		Il conferimento dei dati è facoltativo; in assenza di tali dati non sarà peraltro possibile dare seguito all'invio delle comunicazioni.
-		I suoi dati (nome, cognome, indirizzo mail e cellulare) verranno comunicati a: Civiform soc. coop. sociale, Cividale (cap 33043) - UD  viale Gemona, 7, ai fini dell'invio delle newsletter e di altre eventuali comunicazioni.
-		In relazione al trattamento Lei potrà esercitare i diritti di cui all'art.7 del d.lgs. n.196/2003;
-		Il titolare del trattamento è Civiform soc. coop. sociale.
-		Il responsabile del trattamento è  ANDREA ROSSATO.
-		Avendo compilato questo modulo e premuto il pulsante \"Invia\" di questa pagina, ricevute le informazioni di cui all'art.13 del d.lgs. n.196/2003, sopra riportate, presto il mio consenso al trattamento dei dati personali da voi richiesti.
-
-		Letta la presente nota informativa, esprimo dunque il mio consenso al trattamento ed alla comunicazione dei miei dati personali e ai correlati trattamenti ai soggetti che svolgono le attività indicate nella stessa informativa. Sono consapevole che in mancanza del mio consenso la registrazione non potrà essere eseguita.";
-
-	function __construct()
-	{
-		//
-	}
-
 	public static function register()
 	{
 		$plugin = new self();
-		add_action( 'wp_enqueue_scripts', array( $plugin, 'mivar_iscrizioni_load_scripts' ) );
 		add_action( 'init', array( $plugin, 'mivar_iscrizioni_create_post_types' ) );
 		add_action( 'admin_init', array( $plugin, 'mivar_iscrizioni_admin_init_rin' ) );
 		add_action( 'save_post', array( $plugin, 'mivar_iscrizioni_add_custom_fields_rin' ), 10, 2 );
@@ -195,39 +12,14 @@ class Ialpress_Richinfo
 		add_action( 'template_redirect', array( $plugin, 'mivar_iscrizioni_detect_form_submit' ) );
 		add_action( 'admin_footer', array( $plugin, 'mivar_iscrizioni_export_csv' ) );
 		add_action( 'admin_init', array( $plugin, 'export_csv' ) );
-		add_action( 'manage_posts_custom_column', array( $plugin, 'mivar_populate_columns' ) );
-		add_action( 'restrict_manage_posts', array( $plugin, 'mivar_corso_filter_list' ) );
+		add_action( 'restrict_manage_posts', array( $plugin, 'mivar_rin_filter_list' ) );
 
 		add_filter( 'manage_edit-richieste-info_columns', array( $plugin, 'mivar_iscrizioni_add_columns_rin' ) );
 		add_filter( 'manage_edit-richieste-info_sortable_columns', array( $plugin, 'mivar_iscrizioni_author_column_sortable_rin' ) );
 		add_filter( 'request', array( $plugin, 'mivar_iscrizioni_column_ordering_rin' ) );
-		add_filter( 'manage_corsi_posts_columns', array( $plugin, 'mivar_add_columns' ) );
 		add_filter( 'parse_query', array( $plugin, 'mivarip_perform_rin_filtering' ) );
 
 		add_shortcode( 'mivar-form-informazioni', array( $plugin, 'mivar_info_form' ) );
-	}
-
-	function mivar_iscrizioni_load_scripts() {
-		$plugin_url = plugin_dir_url( __DIR__.'../' );
-		// scripts
-	    wp_enqueue_script( 'jquery-ui-datepicker' );
-	    wp_register_script( 'jquery-validation', $plugin_url.'assets/js/jquery.validate.min.js', array( 'jquery' ) );
-	    wp_enqueue_script( 'jquery-validation' );
-	    wp_register_script( 'js-codice-fiscale', $plugin_url.'assets/js/codice.fiscale.var.js', array() );
-	    wp_enqueue_script( 'js-codice-fiscale' );
-	    wp_register_script( 'jquery-validation-add', $plugin_url.'assets/js/additional-methods.min.js', array( 'jquery' ) );
-	    wp_enqueue_script( 'jquery-validation-add' );
-	    wp_register_script( 'jquery-validation-loc', $plugin_url.'assets/js/localization/messages_it.min.js', array( 'jquery' ) );
-	    wp_enqueue_script( 'jquery-validation-loc' );
-	    wp_register_script( 'misc-general-js', $plugin_url.'assets/js/mivar-iscrizioni.js', array( 'jquery' ) );
-	    wp_enqueue_script( 'misc-general-js' );
-	    // styles
-	    wp_register_style( 'jquery-ui-structure', $plugin_url.'assets/css/jquery-ui.structure.min.css' );
-	    wp_enqueue_style( 'jquery-ui-structure' );
-	    wp_register_style( 'jquery-ui-theme', $plugin_url.'assets/css/jquery-ui.theme.min.css' );
-	    wp_enqueue_style( 'jquery-ui-theme' );
-	    wp_register_style( 'misc-general-styles', $plugin_url.'assets/css/mivar-iscrizioni.css' );
-	    wp_enqueue_style( 'misc-general-styles' );
 	}
 
 	function mivar_iscrizioni_create_post_types() {
@@ -622,6 +414,7 @@ class Ialpress_Richinfo
 		// $columns['rin_nomcog'] = 'Nome e Cognome';
 		$columns['rin_email'] = 'Email';
 		$columns['rin_residenza'] = 'Residenza';
+		$columns['rin_corso'] = 'Corso';
 		$columns['rin_sedecorso'] = 'Sede Corso';
 		$columns['rin_newsletter'] = 'Iscrizione Newsletter';
 		unset( $columns['comments'] );
@@ -656,6 +449,13 @@ class Ialpress_Richinfo
 		elseif ( 'rin_newsletter' == $column ) {
 			$rin_newsletter = get_post_meta( get_the_ID(), 'rin_newsletter', true )==1 ? 'Sì' : 'No';
 			echo $rin_newsletter;
+		}
+		elseif ( 'rin_corso' == $column ) {
+			$rin_corso = intval( get_post_meta( get_the_ID(), 'rin_corso', true ) );
+			if ( !empty($rin_corso) ) {
+				$corso = get_the_title( $rin_corso );
+			} else $corso = '-';
+			echo $corso;
 		}
 		elseif ( 'rin_sedecorso' == $column ) {
 			$id_corso = get_post_meta( get_the_ID(), 'rin_corso', true );
@@ -694,7 +494,7 @@ class Ialpress_Richinfo
 					$ninf = esc_sql( $_GET['ninf'] );
 					$rin = get_post( $ninf );
 					if ( is_object($rin) ) {
-						echo mivar_iscrizioni_display_details_rin($rin);
+						echo $this->mivar_iscrizioni_display_details_rin($rin);
 
 						if ( !empty($rin_corso) ) {
 					?>
@@ -824,7 +624,7 @@ class Ialpress_Richinfo
 	function mivar_iscrizioni_detect_form_submit( $template ) {	
 		
 		if ( !empty( $_POST['mrin_form_submit'] ) ) {
-			mivar_iscrizioni_process_form_submit_rin();
+			$this->mivar_iscrizioni_process_form_submit_rin();
 		} else {
 			return $template;
 		}		
@@ -878,14 +678,13 @@ class Ialpress_Richinfo
 			$nid = wp_insert_post( $rin );
 			$pid = get_post( $nid );
 
-			mivar_iscrizioni_add_custom_fields_rin( $nid, $pid );
+			$this->mivar_iscrizioni_add_custom_fields_rin( $nid, $pid );
 
 			// invio mail
 			$subject = '[Civiform] Nuova richiesta informazioni dal sito';
-			$body = '<p>Nuova richiesta di iscrizione a un corso sul sito Civiform.it</p>' . mivar_iscrizioni_display_details_rin($pid);
+			$body = '<p>Nuova richiesta di iscrizione a un corso sul sito Civiform.it</p>' . $this->mivar_iscrizioni_display_details_rin($pid);
 			$headers = array('Content-Type: text/html; charset=UTF-8', 'From: Civiform.it <no-reply@civiform.it>');
-			global $_to_send;
-			wp_mail( $_to_send, $subject, $body, $headers );
+			wp_mail( $this->to_send, $subject, $body, $headers );
 
 			// redirect
 			$redirect_address = ( empty( $_POST['_wp_http_referer'] ) ? site_url() : $_POST['_wp_http_referer'] );
@@ -936,7 +735,7 @@ class Ialpress_Richinfo
 	                'orderby'       	=> 'post_title',
 	            );
 	            $q = new WP_Query( $args );
-	            echo "Nome;Cognome;Indirizzo;Citta';Cap;Provincia;Telefono;Cellulare;Email;Note;Newsletter;Corso;Data Registrazione\r\n";
+	            echo "Nome;Cognome;Indirizzo;Citta';Cap;Provincia;Telefono;Cellulare;Email;Note;Newsletter;Corso;Sede;Data Registrazione\r\n";
 	            foreach ( $q->posts as $isc ) {
 	            	$rin_nome = esc_html( get_post_meta( $isc->ID, 'rin_nome', true ) );
 					$rin_cognome = esc_html( get_post_meta( $isc->ID, 'rin_cognome', true ) );
@@ -950,6 +749,8 @@ class Ialpress_Richinfo
 					$rin_note = esc_html( get_post_meta( $isc->ID, 'rin_note', true ) );
 					$rin_newsletter = intval( get_post_meta( $isc->ID, 'rin_newsletter', true ) );
 					$rin_corso = intval( get_post_meta( $isc->ID, 'rin_corso', true ) );
+					$rin_sedecorso = esc_html( get_post_meta( $isc->ID, 'rin_sedecorso', true ) );
+					$sedecorso = get_term( $rin_sedecorso, 'sede_corso' );
 					$ts_richiesta = get_the_date('d/m/Y H:i:s', $isc->ID);
 					if ( !empty($rin_newsletter) ) $rin_newsletter = 'Sì';
 					else $rin_newsletter = 'No';
@@ -957,7 +758,7 @@ class Ialpress_Richinfo
 						$corso = get_the_title( $rin_corso );
 					}
 	 
-	                echo '"' . $rin_nome . '";"' . $rin_cognome . '";"' . $rin_indirizzo . '";"' . $rin_citta . '";"' . $rin_cap . '";"' . $rin_provincia . '";"' . $rin_telefono . '";"' . $rin_cellulare . '";"' . $rin_email . '";"' . $rin_note . '";"' . $rin_newsletter . '";"' . $corso . '";"' . $ts_richiesta . '"' . "\r\n";
+	                echo '"' . $rin_nome . '";"' . $rin_cognome . '";"' . $rin_indirizzo . '";"' . $rin_citta . '";"' . $rin_cap . '";"' . $rin_provincia . '";"' . $rin_telefono . '";"' . $rin_cellulare . '";"' . $rin_email . '";"' . $rin_note . '";"' . $rin_newsletter . '";"' . $corso . '";"' . $sedecorso->name . '";"' . $ts_richiesta . '"' . "\r\n";
 
 	                // wp_update_post(array(
 	                // 	'ID' => $isc->ID,
@@ -970,113 +771,14 @@ class Ialpress_Richinfo
 	    }
 	}
 
-	// CORSI
-	// COLONNE CUSTOM
-	// Register function to be called when column list is being prepared
-	function mivar_add_columns( $columns ) {
-	    $new_columns = array(
-			'corsi_area' => __('Area', 'mivar-ialpress'),
-			'corsi_tipologia' => __('Tipologia', 'mivar-ialpress'),
-			'corsi_sede' => __('Sede', 'mivar-ialpress'),
-		);
-	    return array_merge($columns, $new_columns);
-	}
-
-	// Register function to be called when custom post columns are rendered
-
-	// Function to send data for custom columns when displaying items
-	function mivar_populate_columns( $column ) {
-		global $post;
-
-		// Check column name and send back appropriate data
-		if ( 'corsi_area' == $column ) {
-			$__t = get_the_term_list($post->ID, 'area_corsi');
-			echo $__t;
-		}
-		elseif ( 'corsi_tipologia' == $column ) {
-			$__t = get_the_term_list($post->ID, 'tipologia_corsi');
-			echo $__t;
-		}
-		elseif ( 'corsi_sede' == $column ) {
-			$__t = get_the_term_list($post->ID, 'sede_corso');
-			echo $__t;
-		}
-	}
-
 	// FILTRI
-	// Register function to be called when displaying post filter drop-down lists
 	// custom dropdown for filters
-	function mivar_corso_filter_list() {
+	function mivar_rin_filter_list() {
 		$screen = get_current_screen(); 
 	    global $wp_query; 
-		if ( 'corsi' == $screen->post_type ) {
+		if ( 'richieste-info'==$screen->post_type ) {
 			wp_dropdown_categories( array(
-				'show_option_all'	=>  __('Tutte le aree', 'mivar-ialpress'),
-				'taxonomy'			=>  'area_corsi',
-				'name'				=>  'area_corsi',
-				'orderby'			=>  'name',
-				'selected'        =>   
-	            ( isset( $wp_query->query['area_corsi'] ) ? $wp_query->query['area_corsi'] : '' ),
-				'hierarchical'		=>  false,
-				'depth'				=>  3,
-				'show_count'		=>  false,
-				'hide_empty'		=>  false,
-			) );
-
-			wp_dropdown_categories( array(
-				'show_option_all'	=>  __('Tutte le tipologie', 'mivar-ialpress'),
-				'taxonomy'			=>  'tipologia_corsi',
-				'name'				=>  'tipologia_corsi',
-				'orderby'			=>  'name',
-				'selected'        =>   
-	            ( isset( $wp_query->query['tipologia_corsi'] ) ? $wp_query->query['tipologia_corsi'] : '' ),
-				'hierarchical'		=>  false,
-				'depth'				=>  3,
-				'show_count'		=>  false,
-				'hide_empty'		=>  false,
-			) );
-
-			wp_dropdown_categories( array(
-				'show_option_all'	=>  __('Tutte le sedi', 'mivar-ialpress'),
-				'taxonomy'			=>  'sede_corso',
-				'name'				=>  'sede_corso',
-				'orderby'			=>  'name',
-				'selected'        =>   
-	            ( isset( $wp_query->query['sede_corso'] ) ? $wp_query->query['sede_corso'] : '' ),
-				'hierarchical'		=>  false,
-				'depth'				=>  3,
-				'show_count'		=>  false,
-				'hide_empty'		=>  false,
-			) );
-		} else if ( 'iscrizioni-speciali'==$screen->post_type ) {
-			wp_dropdown_categories( array(
-				'show_option_all'	=>  __('Tutte le sedi', 'mivar-ialpress'),
-				'taxonomy'			=>  'sede_corso',
-				'name'				=>  'sede_corso_isp',
-				'orderby'			=>  'name',
-				'selected'        =>   
-	            ( isset( $_GET['sede_corso_isp'] ) ? $_GET['sede_corso_isp'] : '' ),
-				'hierarchical'		=>  false,
-				'depth'				=>  3,
-				'show_count'		=>  false,
-				'hide_empty'		=>  false,
-			) );
-		} else if ( 'iscrizioni'==$screen->post_type ) {
-			wp_dropdown_categories( array(
-				'show_option_all'	=>  __('Tutte le sedi', 'mivar-ialpress'),
-				'taxonomy'			=>  'sede_corso',
-				'name'				=>  'sede_corso_isc',
-				'orderby'			=>  'name',
-				'selected'        =>   
-	            ( isset( $_GET['sede_corso_isc'] ) ? $_GET['sede_corso_isc'] : '' ),
-				'hierarchical'		=>  false,
-				'depth'				=>  3,
-				'show_count'		=>  false,
-				'hide_empty'		=>  false,
-			) );
-		} else if ( 'richieste-info'==$screen->post_type ) {
-			wp_dropdown_categories( array(
-				'show_option_all'	=>  __('Tutte le sedi', 'mivar-ialpress'),
+				'show_option_all'	=>  __('Tutte le sedi', 'mivar'),
 				'taxonomy'			=>  'sede_corso',
 				'name'				=>  'sede_corso_rin',
 				'orderby'			=>  'name',
@@ -1089,8 +791,6 @@ class Ialpress_Richinfo
 			) );
 		}
 	}
-
-	// Register function to be called when preparing post query
 
 	// Function to modify query variable based on filter selection
 	function mivarip_perform_rin_filtering( $query ) {

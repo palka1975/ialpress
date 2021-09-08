@@ -5,7 +5,6 @@ function mivarip_install()
 	global $wpdb;
 
 	$charset_collate = $wpdb->get_charset_collate();
-	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 	// --
 	// -- Struttura della tabella mii_anagrafica
@@ -129,7 +128,7 @@ function mivarip_install()
 		tipologia_utenti int(11) DEFAULT NULL,
 		max_num_allievi int(11) DEFAULT NULL,
 		tipologia_utenza_corso int(11) DEFAULT NULL,
-		altra_tipologia_svantaggio int(11) DEFAULT NULL,
+		altra_tipologia_svantaggio varchar(255) DEFAULT NULL,
 		prevede_visita_didattica int(11) DEFAULT NULL,
 		data_prevista_svolgimento_prove_ammissione datetime DEFAULT NULL,
 		data_svolgimento_prove_ammissione datetime DEFAULT NULL,
@@ -352,4 +351,18 @@ function mivarip_install()
 	) $charset_collate;";
 
 	dbDelta( $sql );
+
+	// --
+	// -- Struttura della tabella mii_metavalues
+	// --
+
+	$sql = "CREATE TABLE mii_metavalues (
+	  ID int(11) NOT NULL AUTO_INCREMENT,
+	  mii_key varchar(255) NOT NULL,
+	  mii_value longtext NOT NULL,
+	  PRIMARY KEY  (ID)
+	) $charset_collate;";
+	
+	dbDelta( $sql );
+	
 }

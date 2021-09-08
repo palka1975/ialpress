@@ -1,0 +1,304 @@
+/* https://projects.lukehaas.me/css-loaders/ */
+.loader-container {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  display: inline-block;
+  position: relative;
+  top: 25px;
+}
+.mivarip-loader {
+  font-size: 10px;
+  margin: auto;
+  text-indent: -9999em;
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  background: rgb(99,99,99);
+  background: -moz-linear-gradient(left, rgb(99,99,99) 10%, rgba(99,99,99, 0) 42%);
+  background: -webkit-linear-gradient(left, rgb(99,99,99) 10%, rgba(99,99,99, 0) 42%);
+  background: -o-linear-gradient(left, rgb(99,99,99) 10%, rgba(99,99,99, 0) 42%);
+  background: -ms-linear-gradient(left, rgb(99,99,99) 10%, rgba(99,99,99, 0) 42%);
+  background: linear-gradient(to right, rgb(99,99,99) 10%, rgba(99,99,99, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.mivarip-loader:before {
+  width: 50%;
+  height: 50%;
+  background: rgb(99,99,99);
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.mivarip-loader:after {
+  background: #ffffff;
+  width: 65%;
+  height: 65%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+/**********************/
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 24px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #cb1717;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #cb1717;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(16px);
+  -ms-transform: translateX(16px);
+  transform: translateX(16px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.mivar-header {
+  max-width: 100%;
+}
+
+#update_console {
+	background: #fff;
+	font-family: monospace;
+	padding: 10px 20px;
+	margin-top: 30px;
+	border: 1px solid #777;
+	min-height: 120px;
+	width: 50%;
+	min-width: 650px;
+	overflow: hidden;
+}
+
+.update-box {
+  padding: 20px;
+  border: 1px solid #ccc;
+  display: inline-block;
+  border-radius: 5px;
+}
+.update-box p {
+  margin-top: 0;
+}
+
+.mivarip-detail .postbox-container {
+  float: none;
+}
+.mivarip-detail .postbox {
+  width: 40%;
+  min-width: 450px;
+  border-radius: 10px;
+  float: left;
+  margin-right: 10px;
+}
+.mivarip-detail .postbox.full {
+  float: none;
+  width: 100%;
+}
+.mivarip-detail .postbox .hndle {
+  cursor: default !Important;
+}
+.mivarip-detail .postbox .cell {
+  clear: both;
+  border-bottom: 1px solid #efefef;
+}
+.mivarip-detail .postbox .cell .left {
+  width:30%;
+  display: block;
+  float: left;
+}
+.mivarip-detail .postbox .cell .right {
+  display: block;
+  width: 70%;
+  float: left;
+}
+@media (max-width: 768px) {
+  .mivarip-detail .postbox {
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+#maintenance-main {
+  font-family: unset;
+}
+.mivarip-tipologia_scheda_corso_box {
+  width: 45%;
+  float: left;
+  border: 2px dashed #ccc;
+  padding: 10px;
+  margin: 5px 10px 5px 0;
+}
+.mivarip-tipologia_scheda_corso_box .mivarip-droppable {
+  min-height: 120px;
+}
+.mivarip-tipologia_scheda_corso_box h4 {
+  margin: 0;
+}
+.mivarip-draggable.tipo_fvg {
+  display: inline-block;
+  padding: 5px;
+  border-radius: 5px;
+  background: #ddd;
+  border: 1px solid #ccc;
+  margin: 3px;
+  cursor: move;
+}
+#salva_associazioni {
+  margin-top: 30px;
+}
+
+#rin_note {
+  width: 100%;
+  height: 125px;
+}
+
+.unread {
+  color: #cb1717;
+}
+.read {
+  color: #228c22;
+}
+
+.messaggio-contatto {
+  padding-bottom: 20px;
+}
+.trigger-open {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3.75rem;
+  width: 100%;
+}
+.trigger-open.closed {
+  height: 26px;
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.3) 74%, rgba(255,255,255,0) 100%);
+  bottom: 0;
+}
+.trigger-open .trigger-int {
+  width: 100px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 5px;
+  border: 1px solid #777;
+  text-align: center;
+  position: absolute;
+  cursor: pointer;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  color: #444;
+  font-family: 'superclarendonlight';
+}
+.trigger-open.closed .trigger-int {
+  bottom: 0;
+}
+
+.table.storico-contatti {
+  border-collapse: collapse;
+}
+.table.storico-contatti td {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+}
+
+#f_tipologia {
+  float: none;
+  position: relative;
+  top: -2px;
+}
+
+#latest-ext table {
+  border-collapse: collapse;
+}
+#latest-ext table td {
+  border: 1px solid #ccc;
+  padding: 3px 11px;
+}
+#latest-ext table th {
+  color: #fff;
+  background: #555;
+  border: 1px solid #555;
+}
+#associa_ialman {
+    height: 30px;
+    display: block;
+}
