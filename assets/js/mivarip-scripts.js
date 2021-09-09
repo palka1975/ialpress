@@ -77,6 +77,37 @@ jQuery(document).ready(function($){
 		}
 	});
 
+	$('#salva_associazioni_ac').click(function(e){
+		e.preventDefault();
+		var $button = $(this),
+			o = {
+				action: 'mivarip_salva_associazioni_ac',
+				mappatura: {}
+			};
+		$('.mivarip-area_corso_box').each(function(){
+			let $this = $(this),
+				$dp = $this.find('.mivarip-droppable'),
+				_id_area_corso = $dp.data('area-assign');
+			o.mappatura[_id_area_corso] = [];
+			$dp.children('.mivarip-draggable').each(function(){
+				o.mappatura[_id_area_corso].push($(this).data('settore-id'));
+			});
+		});
+
+		if ( $('.mivarip-droppable').not(':empty').length>0 ) {
+			$('<div id="salva_associazioni_loader" class="loader-container"><div class="mivarip-loader">Loading...</div></div>').insertAfter($button);
+			$.post(ajax_object.ajax_url, o, function(data){
+				$('#salva_associazioni_loader').remove();
+				if ( data.esito=='ok' ) {
+					$('<p id="salva_associazioni_msg">Associazioni salvate correttamente</p>').insertAfter($button);
+					window.setTimeout(function(){
+						$('#salva_associazioni_msg').fadeOut(function(){$(this).remove()});
+					}, 5000);
+				}
+			}, 'json');
+		}
+	});
+
 	// crm richiesta informazioni
 	$('.messaggio-contatto').each(function(){
 		let $this = $(this),

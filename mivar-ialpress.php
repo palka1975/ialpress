@@ -4,7 +4,7 @@
 * Plugin Name: IalPress
 * Plugin URI: https://mivar.in/
 * Description: Plugin di MiVar per la gestione dell'interfaccia IALMAN su WordPress. Include gestione iscrizioni, iscrizioni speciali e richieste informazioni per compatibilità col vecchio sistema.
-* Version: 1.9
+* Version: 2.0
 * Author: Mivar, Inc.
 * Author URI: https://mivar.in/
 */
@@ -15,7 +15,7 @@ function get_plugin_version() {
 	return $installed_version;
 }
 function check_plugin_version() {
-	$current_version = 1.9;
+	$current_version = 2.0;
 	$installed_version = get_plugin_version();
 	if ( $current_version>$installed_version ) {
 		update_option('mivarip_version', $current_version);
@@ -88,6 +88,13 @@ function update_db(){
 		token varchar(255) NOT NULL,
 		letto datetime NULL,
 		PRIMARY KEY  (ID)
+	) $charset_collate;";
+	
+	dbDelta( $sql );
+
+	$sql = "CREATE TABLE mii_settori_formativi_aree_corsi (
+	  id_settore_formativo int(11) NOT NULL,
+	  id_area_corso int(11) NOT NULL
 	) $charset_collate;";
 	
 	dbDelta( $sql );

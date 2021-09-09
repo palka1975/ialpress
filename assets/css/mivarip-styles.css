@@ -199,6 +199,7 @@ input:checked + .slider:before {
 #maintenance-main {
   font-family: unset;
 }
+.mivarip-area_corso_box,
 .mivarip-tipologia_scheda_corso_box {
   width: 45%;
   float: left;
@@ -206,12 +207,15 @@ input:checked + .slider:before {
   padding: 10px;
   margin: 5px 10px 5px 0;
 }
+.mivarip-area_corso_box .mivarip-droppable,
 .mivarip-tipologia_scheda_corso_box .mivarip-droppable {
   min-height: 120px;
 }
+.mivarip-area_corso_box h4,
 .mivarip-tipologia_scheda_corso_box h4 {
   margin: 0;
 }
+.mivarip-draggable.sett_fvg,
 .mivarip-draggable.tipo_fvg {
   display: inline-block;
   padding: 5px;
@@ -221,6 +225,7 @@ input:checked + .slider:before {
   margin: 3px;
   cursor: move;
 }
+#salva_associazioni_ac,
 #salva_associazioni {
   margin-top: 30px;
 }

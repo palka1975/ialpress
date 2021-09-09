@@ -103,6 +103,7 @@ class Ialman_Ops
 		return $wpdb->get_results( $sql );
 	}
 
+	// Mappatura tipologie formative
 	public function saveTipologieFormativeMapping( $map )
 	{
 		$table = $this->local_prefix.'tipologie_fvg_tipologie_schede';
@@ -123,7 +124,6 @@ class Ialman_Ops
 		}
 		return true;
 	}
-
 	public function getTipologieFormativeMapping( $tipologia_formativa_fvg=null )
 	{
 		global $wpdb;
@@ -138,6 +138,45 @@ class Ialman_Ops
 		foreach ($res as $row) {
 			if ( !isset($ret[$row->id_tipologia_scheda]) ) $ret[$row->id_tipologia_scheda] = array();
 			array_push( $ret[$row->id_tipologia_scheda], $row->id_tipologia_fvg );
+		}
+		return $ret;
+	}
+
+	// Mappatura settori formativi
+	public function saveSettoriFormativiMapping( $map )
+	{
+		$table = $this->local_prefix.'settori_formativi_aree_corsi';
+		global $wpdb;
+		$sql = "TRUNCATE $table";
+		$wpdb->query( $sql );
+
+		foreach ($map as $sk => $assoc) {
+			foreach ($assoc as $fvg) {
+				$this->insertRecord(
+					$table,
+					array(
+						'id_settore_formativo'=>$fvg,
+						'id_area_corso'=>$sk,
+					)
+				);
+			}
+		}
+		return true;
+	}
+	public function getSettoriFormativiMapping( $settore_formativo=null )
+	{
+		global $wpdb;
+		$table = $this->local_prefix.'settori_formativi_aree_corsi';
+		$sql = "SELECT * FROM $table";
+		if ( ! empty( $settore_formativo ) ) {
+			$sql .= " WHERE id_settore_formativo=$settore_formativo";
+			return $wpdb->get_row( $sql );
+		}
+		$res = $wpdb->get_results( $sql );
+		$ret = array();
+		foreach ($res as $row) {
+			if ( !isset($ret[$row->id_area_corso]) ) $ret[$row->id_area_corso] = array();
+			array_push( $ret[$row->id_area_corso], $row->id_settore_formativo );
 		}
 		return $ret;
 	}
@@ -711,6 +750,7 @@ class Ialman_Ops
 		// $flag_ns = $cor_tipo=='formazione-dopo-le-medie'?'si':'no';
 		$flag_ns = 'no';
 
+		// tipologia corso
 		$t_map = $this->getTipologieFormativeMapping( $ca_com->TIPOLOGIA_FORMATIVA_FVG );
 		$tipologia_term = get_term( $t_map->id_tipologia_scheda, 'tipologia_corsi' );
 		if ( empty( $tipologia_term ) ) {
@@ -718,7 +758,15 @@ class Ialman_Ops
 			$tipologia_term->name = $this->getJoinTableValue( 'tipologia_formativa_fvg', $ca_com->TIPOLOGIA_FORMATIVA_FVG );
 			$tipologia_term->term_id = 173; // ALTRO
 		}
-
+		// area corso
+		$sf_map = $this->getSettoriFormativiMapping( $ca_com->SETTORE_FORMATIVO );
+		$settore_term = get_term( $sf_map->id_area_corso, 'area_corsi' );
+		if ( empty( $settore_term ) ) {
+			$settore_term = new stdClass();
+			$settore_term->name = $this->getJoinTableValue( 'settore_formativo', $ca_com->SETTORE_FORMATIVO );
+			$settore_term->term_id = 179; // ALTRO
+		}
+		// sede
 		$wp_sede = $this->getSede( $ca_com->ID_SEDE_IAL, false );
 		$desc_values = array(
 			$tipologia_term->name,
@@ -744,6 +792,7 @@ class Ialman_Ops
 			'tax_input'=>array(
 				'sede_corso' => array( $this->getSede( $ca_com->ID_SEDE_IAL ) ),
 				'tipologia_corsi' => array( $tipologia_term->term_id ),
+				'area_corsi' => array( $settore_term->term_id ),
 			),
 		);
 		$new_corso = wp_insert_post($post_arr);
@@ -956,9 +1005,16 @@ class Ialman_Ops
 						$tipologia_term->name = $this->getJoinTableValue( 'tipologia_formativa_fvg', $com->tipologia_formativa_fvg );
 						$tipologia_term->term_id = 173; // ALTRO
 					}
-					// echo get_the_title( $impCom->ID ) . '<br>';
-					// echo 'tipologia: ' . $tipologia_term->name . '<br>';
 					wp_set_post_terms( $impCom->ID, array($tipologia_term->term_id), 'tipologia_corsi' );
+					// area corso
+					$sf_map = $this->getSettoriFormativiMapping( $com->settore_formativo );
+					$settore_term = get_term( $sf_map->id_area_corso, 'area_corsi' );
+					if ( empty( $settore_term ) ) {
+						$settore_term = new stdClass();
+						$settore_term->name = $this->getJoinTableValue( 'settore_formativo', $com->settore_formativo );
+						$settore_term->term_id = 179; // ALTRO
+					}
+					wp_set_post_terms( $impCom->ID, array($settore_term->term_id), 'area_corsi' );
 					// sede
 					$wp_sede = $this->getSede( $com->id_sede_ial, true );
 					// echo 'sede: ' . $wp_sede . '<br><br>';

@@ -18,12 +18,23 @@ function mivaripUpdateTable() {
     die();
 }
 
-add_action( 'wp_ajax_mivarip_salva_associazioni', 'mivaripSaveMapping' );
-add_action( 'wp_ajax_nopriv_mivarip_salva_associazioni', 'mivaripSaveMapping' );
-function mivaripSaveMapping() {
+add_action( 'wp_ajax_mivarip_salva_associazioni', 'mivaripSaveMappingTipologieCorsi' );
+add_action( 'wp_ajax_nopriv_mivarip_salva_associazioni', 'mivaripSaveMappingTipologieCorsi' );
+function mivaripSaveMappingTipologieCorsi() {
     $mappatura = $_POST['mappatura'];
     $_ialman = new Ialman_Ops();
     $esito = $_ialman->saveTipologieFormativeMapping( $mappatura );
+    if ( $esito ) echo json_encode( array('esito'=>'ok') );
+    else echo json_encode( array('esito'=>'ko') );
+    die();
+}
+
+add_action( 'wp_ajax_mivarip_salva_associazioni_ac', 'mivaripSaveMappingAreeCorsi' );
+add_action( 'wp_ajax_nopriv_mivarip_salva_associazioni_ac', 'mivaripSaveMappingAreeCorsi' );
+function mivaripSaveMappingAreeCorsi() {
+    $mappatura = $_POST['mappatura'];
+    $_ialman = new Ialman_Ops();
+    $esito = $_ialman->saveSettoriFormativiMapping( $mappatura );
     if ( $esito ) echo json_encode( array('esito'=>'ok') );
     else echo json_encode( array('esito'=>'ko') );
     die();

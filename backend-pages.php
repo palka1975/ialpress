@@ -421,12 +421,13 @@ function mivarip_tools_page(){
         <h1>Strumenti di manutenzione</h1>
         <div id="maintenance-main">
             <ul>
-                <li><a href="#mivarip-tab-1">Mappatura Tipologie Formative FVG</a></li>
+                <li><a href="#mivarip-tab-1">Mappatura Tipologie Formative</a></li>
+                <li><a href="#mivarip-tab-3">Mappatura Settori Formativi</a></li>
                 <li><a href="#mivarip-tab-2">Update Manuale</a></li>
             </ul>
             <div id="mivarip-tab-1">
                 <div class="tools_field">
-                    <h4>Mappatura Tipologie Formative FVG</h4>
+                    <h4>Mappatura Tipologie Formative FVG (IALMan) su Tipologie Corsi</h4>
                     <?php
                     $tipologia_formativa_fvg = $_ialman->getReferenceTableValues( 'tipologia_formativa_fvg' );
                     $tipologia_scheda_corso = get_terms( array('taxonomy'=>'tipologia_corsi', 'hide_empty'=>false) );
@@ -467,6 +468,51 @@ function mivarip_tools_page(){
                         ?>
                     </div>
                     <button id="salva_associazioni" class="button-primary">Salva associazioni</button>
+                </div>
+            </div>
+            <div id="mivarip-tab-3">
+                <div class="tools_field">
+                    <h4>Mappatura Settori Formativi (IALMan) su Aree Corsi</h4>
+                    <?php
+                    $settore_formativo = $_ialman->getReferenceTableValues( 'settore_formativo' );
+                    $aree_corsi = get_terms( array('taxonomy'=>'area_corsi', 'hide_empty'=>false) );
+                    $already_mapped = array();
+
+                    $current_mapping = $_ialman->getSettoriFormativiMapping();
+                    $tp_html = array();
+                    foreach ($aree_corsi as $term) {
+                        if ( isset($current_mapping[$term->term_id]) ) {
+                            foreach ($settore_formativo as $row) {
+                                if ( in_array($row->ID, $current_mapping[$term->term_id]) ) {
+                                    array_push($already_mapped, $row->ID);
+                                    if ( !isset($tp_html[$term->term_id]) ) $tp_html[$term->term_id] = '';
+                                    $tp_html[$term->term_id] .= '<span class="mivarip-draggable tipo_fvg" data-settore-id="' . $row->ID . '">' . $row->descrizione . '</span>';
+                                }
+                            }
+                        }
+                    }
+                    ?>
+                    <div id="settori_formativi_ext" class="mivarip-droppable">
+                        <?php
+                        foreach ($settore_formativo as $row) {
+                            if ( ! in_array($row->ID, $already_mapped) )
+                                echo '<span class="mivarip-draggable sett_fvg" data-settore-id="' . $row->ID . '">' . $row->descrizione . '</span>';
+                        }
+                        ?>
+                    </div>
+                    <div id="aree_corsi_ext" class="clearfix">
+                        <?php
+                        foreach ($aree_corsi as $term) {
+                            ?>
+                            <div class="mivarip-area_corso_box">
+                                <h4><?php echo $term->name ?></h4>
+                                <div class="mivarip-droppable" data-area-assign="<?php echo $term->term_id ?>"><?php if ( isset($tp_html[$term->term_id]) ) echo $tp_html[$term->term_id]; ?></div>
+                            </div>
+                        <?php
+                        }
+                        ?>
+                    </div>
+                    <button id="salva_associazioni_ac" class="button-primary">Salva associazioni</button>
                 </div>
             </div>
             <div id="mivarip-tab-2">
