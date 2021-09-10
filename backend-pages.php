@@ -91,7 +91,7 @@ function do_export_csv() {
             }
  
             exit();
-        } else die("You don't have permissions to see this page.");
+        } else die("You don't have permissions to access this page.");
     }
 }
 
