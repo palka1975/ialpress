@@ -43,6 +43,7 @@ if ( $richieste_informazioni_attive OR $iscrizioni_attive OR $iscrizioni_special
 if ( $iscrizioni_attive ) include "classes/class-ialpress-iscrizioni.php";
 if ( $iscrizioni_speciali_attive ) include "classes/class-ialpress-iscrizioni-speciali.php";
 if ( $richieste_informazioni_attive ) include "classes/class-ialpress-richinfo.php";
+include "classes/class-ialpress-iscrizioniws.php";
 
 function update_db(){
 	global $wpdb;
