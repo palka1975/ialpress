@@ -63,4 +63,29 @@ jQuery(document).ready(function($){
 		    else error.insertAfter( element );
 		}
 	});
+
+	var checkCF = $('#ws_pre_check_cf');
+	if ( checkCF.length ) {
+		// authorize IP
+		$.post(ajaxurl, {action: 'ipws_check_ip'}, function(data){
+			if ( data.Result==1 ) {
+				
+				// first submit CF
+				checkCF.click(function(){
+					var o = {
+						action: 'ipws_check_cf',
+						cf: $('#ws_cf_pre').val()
+					};
+					if ( o.cf!='' ) {
+						$.post(ajaxurl, o, function(data){
+							
+						}, 'json');
+					}
+				});
+
+			} else {
+				alert( "Impossibile completare l'operazione al momento. Si prega di riprovare più tardi." );
+			}
+		}, 'json');
+	}
 });

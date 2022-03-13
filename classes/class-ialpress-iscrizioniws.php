@@ -11,12 +11,39 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 	function mivar_iscrizioniws_form() {
 
 		$get_corso = isset($_REQUEST['getc']) ? $_REQUEST['getc'] : '';
+
+		$corso_ialman = get_post_meta( $get_corso, 'corso_ialman', true );
 		?>
 
-		<form method="post" id="form_preiscrizione_ws" action="">
+		<form id="form_check_cf" method="post" action="">
+			<div class="form-row row">
+				<div class="form-group col-md-2"></div>
+				<div class="form-group col-md-8">
+					<p><?php _e( "Per prima cosa inserisci il tuo codice fiscale. Se è già presente nel nostro archivio caricheremo i tuoi dati, così da semplificare il processo di iscrizione", 'mivar_iscrizioni_plugin' ) ?></p>
+				</div>
+				<div class="form-group col-md-2"></div>
+			</div>
+			<div class="form-row row">
+				<div class="form-group col-md-2"></div>
+				<div class="form-group col-md-8">
+					<label class="control-label" for="ws_cf_pre"><?php _e( 'Codice Fiscale', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
+					<input type="text" class="form-control" id="ws_cf_pre" name="ws_cf_pre" placeholder="<?php _e( 'Codice Fiscale', 'mivar_iscrizioni_plugin' ) ?>" required>
+				</div>
+				<div class="form-group col-md-2"></div>
+			</div>
+			<div class="form-row row">
+				<div class="form-group col-md-2"></div>
+				<div class="form-group col-md-8">
+					<input type="submit" class="btn btn-default" id="ws_pre_check_cf" name="submit" value="<?php _e('Conferma', 'mivar_iscrizioni_plugin') ?>" />
+				</div>
+				<div class="form-group col-md-2"></div>
+			</div>
+		</form>
+
+		<form method="post" id="form_preiscrizione_ws" style="display: none;" action="">
 
 		    <!-- Post variable to indicate user-submitted items -->
-			<input type="hidden" name="isc_corso" value="<?php echo $get_corso ?>" />
+			<input type="hidden" name="isc_corso" value="<?php echo $corso_ialman ?>" />
 
 			<div class="form-row">
 				<div class="form-group col-md-6">
