@@ -857,9 +857,11 @@ class Ialman_Ops
 			if ( $anno_fine=='' ) $periodo_corso = "Da $mese_inizio $anno_inizio";
 			else "$mese_inizio $anno_inizio/$mese_fine $anno_fine";
 		}
+		$ore_stage = intval($row_commessa->numero_ore_stage_previste);
+		if ( empty($ore_stage) OR $ore_stage=='0' OR $ore_stage=='0.00' ) $ore_stage = 'Non previsto';
 		$array_tabella = array(
-			'durata_corso' => ($row_commessa->numero_ore_teoria_previste + $row_commessa->numero_ore_pratica_previste) . ' ore',
-			'stage_corso' => !empty($row_commessa->numero_ore_stage_previste) ? $row_commessa->numero_ore_stage_previste . ' ore' : '',
+			'durata_corso' => intval($row_commessa->numero_ore_teoria_previste + $row_commessa->numero_ore_pratica_previste + $row_commessa->numero_ore_stage_previste) . ' ore',
+			'stage_corso' => $ore_stage,
 			'sede_corso' => $this->getSede( $row_commessa->id_sede_ial, false ),
 			'periodo_corso' => $periodo_corso,
 		);
