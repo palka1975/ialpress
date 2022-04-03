@@ -7,6 +7,7 @@
 .form-group.has-error small.has-error {
 	color: #a94442;
 }
+.form-row {clear: both;}
 @media (max-width: 540px) {
 	#form-preiscrizione .checkbox,
 	#form-preiscrizione-speciale .checkbox,
@@ -18,4 +19,7 @@
 	#form-informazioni .checkbox label small {
 		top: 46px;
 	}
+}
+.ui-menu-item {
+	min-height: 0 !important;
 }

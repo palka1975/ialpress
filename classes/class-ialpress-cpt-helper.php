@@ -231,6 +231,11 @@ class Ialpress_Cpt_Helper
 		$plugin_url = plugin_dir_url( __DIR__.'../' );
 		// scripts
 	    wp_enqueue_script( 'jquery-ui-datepicker' );
+	    wp_enqueue_script( 'jquery-ui-autocomplete' );
+	    if ( $_SERVER['HTTP_HOST']==='local.civiform.it' ) {
+	    	wp_register_script( 'jquery-ui-local', $plugin_url.'assets/js/jquery-ui.min.js', array( 'jquery' ) );
+	    	wp_enqueue_script( 'jquery-ui-local' );
+	    }
 	    wp_register_script( 'jquery-validation', $plugin_url.'assets/js/jquery.validate.min.js', array( 'jquery' ) );
 	    wp_enqueue_script( 'jquery-validation' );
 	    wp_register_script( 'js-codice-fiscale', $plugin_url.'assets/js/codice.fiscale.var.js', array() );

@@ -91,15 +91,107 @@ add_action( 'wp_ajax_ipws_check_cf', 'ipws_check_cf' );
 add_action( 'wp_ajax_nopriv_ipws_check_cf', 'ipws_check_cf' );
 function ipws_check_cf() {
     $cf = $_POST['cf'];
-    echo callWS( 'GET', 'CercaCF/'.$cf.'/IP/164.132.183.240' );
+    echo callWS( 'GET', 'CercaCF/'.$cf );
     die();
 }
 
 add_action( 'wp_ajax_ipws_check_ip', 'ipws_check_ip' );
 add_action( 'wp_ajax_nopriv_ipws_check_ip', 'ipws_check_ip' );
 function ipws_check_ip() {
-    $cf = $_POST['cf'];
     echo callWS( 'GET', 'IP' );
+    die();
+}
+
+add_action( 'wp_ajax_ipws_check_city', 'ipws_check_city' );
+add_action( 'wp_ajax_nopriv_ipws_check_city', 'ipws_check_city' );
+function ipws_check_city() {
+    $term = urlencode( $_POST['term'] );
+    $res = json_decode( callWS( 'GET', 'Comuni/'.$term ) );
+    if ( $res->Result==1 ) {
+        echo json_encode( $res->ResponseData );
+    } else {
+        echo json_encode([
+            [
+                "Descrizione" => "Nessun comune trovato",
+                "IDComune" => '',
+                "Provincia" => 'ripetere la ricerca',
+            ],
+        ]);
+    }
+    die();
+}
+
+add_action( 'wp_ajax_ipws_check_nation', 'ipws_check_nation' );
+add_action( 'wp_ajax_nopriv_ipws_check_nation', 'ipws_check_nation' );
+function ipws_check_nation() {
+    $term = urlencode( $_POST['term'] );
+    $res = json_decode( callWS( 'GET', 'Nazioni/'.$term ) );
+    if ( $res->Result==1 ) {
+        echo json_encode( $res->ResponseData );
+    } else {
+        echo json_encode([
+            [
+                "Descrizione" => "Nessuno stato trovato",
+                "IDNazione" => '',
+            ],
+        ]);
+    }
+    die();
+}
+
+add_action( 'wp_ajax_ipws_check_citizenship', 'ipws_check_citizenship' );
+add_action( 'wp_ajax_nopriv_ipws_check_citizenship', 'ipws_check_citizenship' );
+function ipws_check_citizenship() {
+    $term = urlencode( $_POST['term'] );
+    $res = json_decode( callWS( 'GET', 'Cittadinanze/'.$term ) );
+    if ( $res->Result==1 ) {
+        echo json_encode( $res->ResponseData );
+    } else {
+        echo json_encode([
+            [
+                "Descrizione" => "Nessuna corrispondenza trovata",
+                "IDCittadinanza" => '',
+            ],
+        ]);
+    }
+    die();
+}
+
+add_action( 'wp_ajax_ipws_submit_iscrizione', 'ipws_submit_iscrizione' );
+add_action( 'wp_ajax_nopriv_ipws_submit_iscrizione', 'ipws_submit_iscrizione' );
+function ipws_submit_iscrizione() {
+    $data = [
+        "IDCorso" => $_POST['IDCorso'],
+        "CodiceFiscale" => $_POST['CodiceFiscale'],
+        "Cognome" => $_POST['Cognome'],
+        "Nome" => $_POST['Nome'],
+        "Sesso" => $_POST['Sesso'],
+        "DataNascita" => $_POST['DataNascita'],
+        "IDComuneNascita" => $_POST['IDComuneNascita'],
+        "IsComuneEsteroNascita" => $_POST['IsComuneEsteroNascita'],
+        "ComuneEsteroNascita" => $_POST['ComuneEsteroNascita'],
+        "IDNazioneNascita" => $_POST['IDNazioneNascita'],
+        "IDPrimaCittadinanza" => $_POST['IDPrimaCittadinanza'],
+        "IDComuneResidenza" => $_POST['IDComuneResidenza'],
+        "IsComuneEsteroResidenza" => $_POST['IsComuneEsteroResidenza'],
+        "ComuneEsteroResidenza" => $_POST['ComuneEsteroResidenza'],
+        "IDNazioneResidenza" => $_POST['IDNazioneResidenza'],
+        "CAPResidenza" => $_POST['CAPResidenza'],
+        "IndirizzoResidenza" => $_POST['IndirizzoResidenza'],
+        "EMailPersonale" => $_POST['EMailPersonale'],
+        "CellularePersonale" => $_POST['CellularePersonale'],
+    ];
+    $res = json_decode( callWS( 'SET', $data ) );
+    var_dump( $res );
+    if ( $res->Result==1 ) {
+        echo json_encode( $res->ResponseData );
+    } else {
+        echo json_encode([
+            [
+                "Esito" => "KO",
+            ],
+        ]);
+    }
     die();
 }
 
@@ -107,15 +199,11 @@ function callWS($method, $data){
     $url = IALMAN_WS_URL;
     $curl = curl_init();
     switch ($method){
-        case "POST":
+        case "SET":
+            $url .= 'Set/Iscrizione';
             curl_setopt($curl, CURLOPT_POST, 1);
             if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            break;
-        case "PUT":
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
-            if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);                              
+                curl_setopt($curl, CURLOPT_POSTFIELDS, serialize( $data ));
             break;
         case "GET":
             $url .= 'Get/' . $data;
