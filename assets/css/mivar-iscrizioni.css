@@ -23,3 +23,19 @@
 .ui-menu-item {
 	min-height: 0 !important;
 }
+.spinner {
+	background: url(../img/spinner.gif) no-repeat;
+	background-size: 20px 20px;
+	display: inline-block;
+	visibility: hidden;
+	vertical-align: middle;
+	opacity: 0.7;
+	filter: alpha(opacity=70);
+	width: 20px;
+	height: 20px;
+	margin: 4px 10px 0;
+}
+.spinner.is-active,
+.loading-content .spinner {
+	visibility: visible;
+}

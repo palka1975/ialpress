@@ -203,7 +203,7 @@ function callWS($method, $data){
             $url .= 'Set/Iscrizione';
             curl_setopt($curl, CURLOPT_POST, 1);
             if ($data)
-                curl_setopt($curl, CURLOPT_POSTFIELDS, serialize( $data ));
+                curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
             break;
         case "GET":
             $url .= 'Get/' . $data;

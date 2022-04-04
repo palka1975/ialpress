@@ -18,7 +18,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		<form method="post" id="form_preiscrizione_ws" action="">
 
 		    <!-- Post variable to indicate user-submitted items -->
-			<input type="hidden" name="isc_corso" value="<?php echo $corso_ialman ?>" />
+			<input type="hidden" name="isc_corso" id="isc_corso" value="<?php echo $corso_ialman ?>" />
 
 			<h4>Dati anagrafici</h4>
 			<div class="form-row">
@@ -37,8 +37,8 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 					<input type="text" class="form-control" id="isc_codfis" name="isc_codfis" placeholder="<?php _e( 'Codice Fiscale', 'mivar_iscrizioni_plugin' ) ?>" required>
 				</div>
 				<div class="form-group col-md-4">
-					<label class="control-label" for="isc_datanascita"><?php _e( 'Data di Nascita', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
-					<input type="text" class="form-control" id="isc_datanascita" name="isc_datanascita" placeholder="<?php _e( 'Data di Nascita', 'mivar_iscrizioni_plugin' ) ?>" required>
+					<label class="control-label" for="isc_datanascita_ws"><?php _e( 'Data di Nascita', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
+					<input type="text" class="form-control" id="isc_datanascita_ws" name="isc_datanascita_ws" placeholder="<?php _e( 'Data di Nascita', 'mivar_iscrizioni_plugin' ) ?>" required>
 				</div>
 				<div class="form-group col-md-2">
 					<label class="control-label" for="isc_cap"><?php _e( 'Sesso', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
@@ -61,7 +61,6 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 				<div class="form-group col-md-6">
 					<label class="control-label" for="isc_citta"><?php _e( 'Città', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
 					<input type="text" class="form-control" id="isc_citta" name="isc_citta" placeholder="<?php _e( 'Città', 'mivar_iscrizioni_plugin' ) ?>" required>
-					<input type="hidden" id="isc_citta_id" name="isc_citta_id" value="">
 				</div>
 				<div class="form-group col-md-4">
 					<label class="control-label" for="isc_provincia"><?php _e( 'Provincia', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
@@ -81,7 +80,6 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 				<div class="form-group col-md-6">
 					<label class="control-label" for="isc_stato"><?php _e( 'Stato', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
 					<input type="text" class="form-control" id="isc_stato" name="isc_stato" placeholder="<?php _e( 'Stato', 'mivar_iscrizioni_plugin' ) ?>" required>
-					<input type="hidden" id="isc_stato_id" name="isc_stato_id" value="">
 				</div>
 				<div class="form-group col-md-6">&nbsp;</div>
 			</div>
@@ -90,19 +88,16 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 				<div class="form-group col-md-6 form-check form-switch">
 					<label class="control-label" for="isc_statonascita"><?php _e( 'Stato di Nascita', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
 					<input type="text" class="form-control" id="isc_statonascita" name="isc_statonascita" placeholder="<?php _e( 'Stato di Nascita', 'mivar_iscrizioni_plugin' ) ?>" required>
-					<input type="hidden" id="isc_statonascita_id" name="isc_statonascita_id" value="">
 				</div>
 				<div class="form-group col-md-6">
 					<label class="control-label" for="isc_luogonascita"><?php _e( 'Località di Nascita', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
 					<input type="text" class="form-control" id="isc_luogonascita" name="isc_luogonascita" placeholder="<?php _e( 'Località di Nascita', 'mivar_iscrizioni_plugin' ) ?>" required>
-					<input type="hidden" id="isc_luogonascita_id" name="isc_luogonascita_id" value="">
 				</div>
 			</div>
 			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label class="control-label" for="isc_cittadinanza"><?php _e( 'Cittadinanza', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
 					<input type="text" class="form-control" id="isc_cittadinanza" name="isc_cittadinanza" placeholder="<?php _e( 'Cittadinanza', 'mivar_iscrizioni_plugin' ) ?>" required>
-					<input type="hidden" id="isc_cittadinanza_id" name="isc_cittadinanza_id" value="">
 				</div>
 				<div class="form-group col-md-6">&nbsp;</div>
 			</div>
@@ -136,6 +131,11 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 
 			<div class="form-row">
 				<div class="form-group col-md-12">
+					<input type="hidden" id="isc_citta_id" name="isc_citta_id" value="">
+					<input type="hidden" id="isc_stato_id" name="isc_stato_id" value="">
+					<input type="hidden" id="isc_statonascita_id" name="isc_statonascita_id" value="">
+					<input type="hidden" id="isc_luogonascita_id" name="isc_luogonascita_id" value="">
+					<input type="hidden" id="isc_cittadinanza_id" name="isc_cittadinanza_id" value="">
 					<input type="submit" class="btn btn-default" name="submit" id="ipws_submit_main" value="<?php _e('Invia', 'mivar_iscrizioni_plugin') ?>" /> <span class="spinner"></span>
 				</div>
 			</div>

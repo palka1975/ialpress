@@ -6,6 +6,9 @@ jQuery(document).ready(function($){
 	$('#isc_datanascita').datepicker({
 		dateFormat: 'dd/mm/yy'
 	});
+	$('#isc_datanascita_ws').datepicker({
+		dateFormat: 'dd/mm/yy',
+	});
 
 	$('#form-preiscrizione').validate({
 		errorClass: 'has-error',
@@ -67,24 +70,22 @@ jQuery(document).ready(function($){
 	var inputCF = $('#isc_codfis');
 	// first submit CF
 	inputCF.change(function(){
-		inputCF.change(function(){
-			let $this = $(this),
-				o = {
-					action: 'ipws_check_cf',
-					cf: $this.val()
-				};
-			if ( o.cf!='' ) {
-				$.post(ajaxurl, o, function(data){
-					if ( data.Result==1 && data.ResponseData.CodiceFiscaleValido==false ) {
-						$('<small id="isc_codfis-error" class="has-error">Inserire un codice fiscale valido</small>').insertAfter( $this );
-						$this.parent().addClass('has-error');
-					} else if ( data.Result==1 && data.ResponseData.CodiceFiscaleValido==true ) {
-						$('#isc_codfis-error').remove();
-						$this.parent().removeClass('has-error');
-					}
-				}, 'json');
-			}
-		});
+		let $this = $(this),
+			o = {
+				action: 'ipws_check_cf',
+				cf: $this.val()
+			};
+		if ( o.cf!='' ) {
+			$.post(ajaxurl, o, function(data){
+				if ( data.Result==1 && data.ResponseData.CodiceFiscaleValido==false ) {
+					$('<small id="isc_codfis-error" class="has-error">Inserire un codice fiscale valido</small>').insertAfter( $this );
+					$this.parent().addClass('has-error');
+				} else if ( data.Result==1 && data.ResponseData.CodiceFiscaleValido==true ) {
+					$('#isc_codfis-error').remove();
+					$this.parent().removeClass('has-error');
+				}
+			}, 'json');
+		}
 	});
 	var inputCITTA = $('#isc_citta');
 	if ( inputCITTA.length ) {
@@ -238,7 +239,7 @@ jQuery(document).ready(function($){
 				$('<small id="isc_citta_id-error" class="has-error">Usare l\'autocomplete per scegliere una città dall\'elenco</small>').insertAfter( $isc_citta_id );
 				$isc_citta_id.parent().addClass('has-error');
 			} else {
-				$('#isc_citta_id').remove();
+				$('#isc_citta_id-error').remove();
 				$isc_citta_id.parent().removeClass('has-error');
 			}
 			let $isc_luogonascita_id = $('#isc_luogonascita_id');
@@ -247,7 +248,7 @@ jQuery(document).ready(function($){
 				$('<small id="isc_luogonascita_id-error" class="has-error">Usare l\'autocomplete per scegliere una città dall\'elenco</small>').insertAfter( $isc_luogonascita_id );
 				$isc_luogonascita_id.parent().addClass('has-error');
 			} else {
-				$('#isc_luogonascita_id').remove();
+				$('#isc_luogonascita_id-error').remove();
 				$isc_luogonascita_id.parent().removeClass('has-error');
 			}
 			let $isc_stato_id = $('#isc_stato_id');
@@ -256,7 +257,7 @@ jQuery(document).ready(function($){
 				$('<small id="isc_stato_id-error" class="has-error">Usare l\'autocomplete per scegliere una nazione dall\'elenco</small>').insertAfter( $isc_stato_id );
 				$isc_stato_id.parent().addClass('has-error');
 			} else {
-				$('#isc_stato_id').remove();
+				$('#isc_stato_id-error').remove();
 				$isc_stato_id.parent().removeClass('has-error');
 			}
 			let $isc_statonascita_id = $('#isc_statonascita_id');
@@ -265,7 +266,7 @@ jQuery(document).ready(function($){
 				$('<small id="isc_statonascita_id-error" class="has-error">Usare l\'autocomplete per scegliere una nazione dall\'elenco</small>').insertAfter( $isc_statonascita_id );
 				$isc_statonascita_id.parent().addClass('has-error');
 			} else {
-				$('#isc_statonascita_id').remove();
+				$('#isc_statonascita_id-error').remove();
 				$isc_statonascita_id.parent().removeClass('has-error');
 			}
 			let $isc_cittadinanza_id = $('#isc_cittadinanza_id');
@@ -274,7 +275,7 @@ jQuery(document).ready(function($){
 				$('<small id="isc_cittadinanza_id-error" class="has-error">Usare l\'autocomplete per scegliere una cittadinanza dall\'elenco</small>').insertAfter( $isc_cittadinanza_id );
 				$isc_cittadinanza_id.parent().addClass('has-error');
 			} else {
-				$('#isc_cittadinanza_id').remove();
+				$('#isc_cittadinanza_id-error').remove();
 				$isc_cittadinanza_id.parent().removeClass('has-error');
 			}
 			if ( formOk ) {
@@ -295,6 +296,8 @@ jQuery(document).ready(function($){
 					comuneResidenza = '';
 					isComuneEsteroResidenza = true;
 				}
+				let _tNascita = $('#isc_datanascita_ws').val().split('/'),
+					dataNascita = _tNascita[2] + '-' + _tNascita[1] + '-' + _tNascita[0];
 				let o = {
 					"action": "ipws_submit_iscrizione",
 					"IDCorso": $('#isc_corso').val(),
@@ -302,7 +305,7 @@ jQuery(document).ready(function($){
 					"Cognome": $('#isc_cognome').val(),
 					"Nome": $('#isc_nome').val(),
 					"Sesso": $('#isc_sesso').val(),
-					"DataNascita": $('#isc_datanascita').val(),
+					"DataNascita": dataNascita,
 					"IDComuneNascita": comuneNascita,
 					"IsComuneEsteroNascita": isComuneEsteroNascita,
 					"ComuneEsteroNascita": comuneEsteroNascita,
@@ -322,6 +325,7 @@ jQuery(document).ready(function($){
 				$.post(ajaxurl, o, function(data){
 					_spinner.removeClass('is-active');
 					buttonMain.removeAttr('disabled');
+				});
 			}
 		}
 	});
