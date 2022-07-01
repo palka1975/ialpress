@@ -566,9 +566,10 @@ class Ialman_Ops
 				} else if ( $exists[1] ) {
 					$this->updateRecord( $table, $row, array('ID'=>$ca_com->ID_CA_COMMESSA) );
 					if ( !empty( $impCom ) ) {
-						foreach( $impCom as $iCom ){
-							$this->updateACF_corso( $iCom->ID, $ca_com->ID_CA_COMMESSA );
-						}
+						// NON aggiorniamo più i corsi dopo la creazione della bozza
+						// foreach( $impCom as $iCom ){
+						// 	$this->updateACF_corso( $iCom->ID, $ca_com->ID_CA_COMMESSA );
+						// }
 					} else {
 						if ( get_option('crea_bozze_corsi')==1 AND $ca_com->STATO_CORSO==8 ) $this->createLocalCorso( $ca_com );
 					}
@@ -950,7 +951,7 @@ class Ialman_Ops
 	{
 		update_post_meta( $post_id, 'corso_ialman', $id_commessa );
 		// UPDATE ACF FIELDS
-		$this->updateACF_corso( $post_id, $id_commessa );
+		// $this->updateACF_corso( $post_id, $id_commessa );
 	}
 
 	public function getLocalCommessa( $id_commessa )
@@ -1022,7 +1023,7 @@ class Ialman_Ops
 					// echo 'sede: ' . $wp_sede . '<br><br>';
 					wp_set_post_terms( $impCom->ID, array($wp_sede), 'sede_corso' );
 					// ACF
-					$this->updateACF_corso( $impCom->ID, $com->ID );
+					// $this->updateACF_corso( $impCom->ID, $com->ID );
 
 					$count_sync++;
 				}
