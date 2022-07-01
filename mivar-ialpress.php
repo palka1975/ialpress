@@ -100,3 +100,73 @@ function update_db(){
 	
 	dbDelta( $sql );
 }
+
+// ricerca ordini per codice_disegno_vedo
+add_action( 'admin_footer', 'search_custom_corso_itemmeta' );
+function search_custom_corso_itemmeta() {
+    $screen = get_current_screen();
+    if ( $screen->id == "edit-corsi" ) {?>
+    <script type="text/javascript">
+        jQuery(document).ready( function($)
+        {
+            $('.tablenav.top .clear').before('<form action="#" id="search_custom_ialman" method="POST"><label for="custom_ialman_code"><?php esc_attr_e('Cerca per codice IAL', 'thecolorsoup');?>: </label><input type="text" id="custom_ialman_code" name="custom_ialman_code" value="" /></form>');
+            $('#search_custom_ialman').submit(function(e){
+            	e.preventDefault();
+            	return false;
+            });
+            $('#custom_ialman_code')
+	            .autocomplete({
+					source: function( request, response ) {
+						let o = {
+							'action': 'custom_ialman_search',
+							'term': request.term
+						};
+						$.post(ajaxurl, o, function(data){
+							response(data);
+						}, 'json');
+					},
+					minLength: 3,
+					focus: function( event, ui ) {
+						return false;
+					},
+					select: function( event, ui ) {
+						// log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+						return false;
+					}
+				})
+				.autocomplete( "instance" )._renderItem = function( ul, item ) {
+					return $( "<li>" )
+						.append( "<div>" + item.label + "</div>" )
+						.appendTo( ul );
+				};
+        });
+    </script>
+	<?php } else return;
+}
+
+add_action('wp_ajax_custom_ialman_search', 'custom_ialman_search');
+add_action('wp_ajax_nopriv_custom_ialman_search', 'custom_ialman_search');
+function custom_ialman_search() {
+	$term = $_POST['term'];
+	global $wpdb;
+	$sql = "SELECT * FROM `wp_36fb4p_postmeta` WHERE `meta_key` = 'corso_ialman' AND meta_value = '$term';";
+	$row = $wpdb->get_row( $sql );
+	if ( ! empty( $row ) ) {
+		$ret = [
+			[
+				'value' => 0,
+				'label' => '<a href="/wp-admin/post.php?post=' . $row->post_id . '&action=edit">Ordine ' . $row->post_id . ' - ' . get_the_title( $row->post_id ) . '</a>',
+			],
+		];
+	} else {
+		$ret = [
+			[
+				'value' => 0,
+				'label' => 'Nessun ordine trovato',
+			],
+		];
+	}
+
+	echo json_encode( $ret );
+	exit();
+}
