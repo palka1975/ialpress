@@ -24,6 +24,14 @@ jQuery(document).ready(function($){
 		errorPlacement: function(error, element) {
 		    if ( !element.is(':checkbox') ) error.appendTo( element.parent() );
 		    else error.insertAfter( element );
+		},
+		submitHandler: function(form) {
+			dataLayer.push({
+				'event': 'submit_form_iscrizione',
+				'id_corso': $('#hid_isc_corso').val(),
+				'nome_corso': $('#hid_isc_corso_nome').val()
+			});
+			form.submit();
 		}
 	});
 
@@ -64,6 +72,14 @@ jQuery(document).ready(function($){
 		errorPlacement: function(error, element) {
 		    if ( !element.is(':checkbox') ) error.appendTo( element.parent() );
 		    else error.insertAfter( element );
+		},
+		submitHandler: function(form) {
+			dataLayer.push({
+				'event': 'submit_form_richiesta_informazioni',
+				'id_corso': $('#hid_rin_corso').val(),
+				'nome_corso': $('#hid_rin_corso_nome').val()
+			});
+			form.submit();
 		}
 	});
 
@@ -92,6 +108,7 @@ jQuery(document).ready(function($){
 		inputCITTA.autocomplete({
 			minLength: 3,
 			source: function(request, response){
+				$( "#isc_citta_id" ).val('');
 				let o = {
 					action: 'ipws_check_city',
 					term: request.term
@@ -118,6 +135,7 @@ jQuery(document).ready(function($){
 		inputCITTANASC.autocomplete({
 			minLength: 3,
 			source: function(request, response){
+				$( "#isc_luogonascita_id" ).val('');
 				let o = {
 					action: 'ipws_check_city',
 					term: request.term
@@ -144,6 +162,7 @@ jQuery(document).ready(function($){
 		inputSTATO.autocomplete({
 			minLength: 3,
 			source: function(request, response){
+				$( "#isc_stato_id" ).val('');
 				let o = {
 					action: 'ipws_check_nation',
 					term: request.term
@@ -169,6 +188,7 @@ jQuery(document).ready(function($){
 		inputSTATONASC.autocomplete({
 			minLength: 3,
 			source: function(request, response){
+				$( "#isc_statonascita_id" ).val('');
 				let o = {
 					action: 'ipws_check_nation',
 					term: request.term
@@ -195,6 +215,7 @@ jQuery(document).ready(function($){
 		inputCITTADINANZA.autocomplete({
 			minLength: 3,
 			source: function(request, response){
+				$( "#isc_cittadinanza_id" ).val('');
 				let o = {
 					action: 'ipws_check_citizenship',
 					term: request.term
@@ -233,53 +254,57 @@ jQuery(document).ready(function($){
 		},
 		submitHandler: function(form) {
 			let formOk = true;
+			let $isc_citta = $('#isc_citta');
 			let $isc_citta_id = $('#isc_citta_id');
 			if ( $isc_citta_id.val()=='' ) {
 				formOk = false;
-				$('<small id="isc_citta_id-error" class="has-error">Usare l\'autocomplete per scegliere una città dall\'elenco</small>').insertAfter( $isc_citta_id );
-				$isc_citta_id.parent().addClass('has-error');
+				$('<small id="isc_citta_id-error" class="has-error">Usare l\'autocomplete per scegliere una città dall\'elenco</small>').insertAfter( $isc_citta );
+				$isc_citta.parent().addClass('has-error');
 			} else {
 				$('#isc_citta_id-error').remove();
-				$isc_citta_id.parent().removeClass('has-error');
+				$isc_citta.parent().removeClass('has-error');
 			}
-			let $isc_luogonascita_id = $('#isc_luogonascita_id');
-			if ( $isc_luogonascita_id.val()=='' ) {
-				formOk = false;
-				$('<small id="isc_luogonascita_id-error" class="has-error">Usare l\'autocomplete per scegliere una città dall\'elenco</small>').insertAfter( $isc_luogonascita_id );
-				$isc_luogonascita_id.parent().addClass('has-error');
-			} else {
-				$('#isc_luogonascita_id-error').remove();
-				$isc_luogonascita_id.parent().removeClass('has-error');
-			}
+			let $isc_stato = $('#isc_stato');
 			let $isc_stato_id = $('#isc_stato_id');
 			if ( $isc_stato_id.val()=='' ) {
 				formOk = false;
-				$('<small id="isc_stato_id-error" class="has-error">Usare l\'autocomplete per scegliere una nazione dall\'elenco</small>').insertAfter( $isc_stato_id );
-				$isc_stato_id.parent().addClass('has-error');
+				$('<small id="isc_stato_id-error" class="has-error">Usare l\'autocomplete per scegliere una nazione dall\'elenco</small>').insertAfter( $isc_stato );
+				$isc_stato.parent().addClass('has-error');
 			} else {
 				$('#isc_stato_id-error').remove();
-				$isc_stato_id.parent().removeClass('has-error');
+				$isc_stato.parent().removeClass('has-error');
 			}
+			let $isc_statonascita = $('#isc_statonascita');
 			let $isc_statonascita_id = $('#isc_statonascita_id');
 			if ( $isc_statonascita_id.val()=='' ) {
 				formOk = false;
-				$('<small id="isc_statonascita_id-error" class="has-error">Usare l\'autocomplete per scegliere una nazione dall\'elenco</small>').insertAfter( $isc_statonascita_id );
-				$isc_statonascita_id.parent().addClass('has-error');
+				$('<small id="isc_statonascita_id-error" class="has-error">Usare l\'autocomplete per scegliere una nazione dall\'elenco</small>').insertAfter( $isc_statonascita );
+				$isc_statonascita.parent().addClass('has-error');
 			} else {
 				$('#isc_statonascita_id-error').remove();
-				$isc_statonascita_id.parent().removeClass('has-error');
+				$isc_statonascita.parent().removeClass('has-error');
 			}
+			let $isc_luogonascita = $('#isc_luogonascita');
+			let $isc_luogonascita_id = $('#isc_luogonascita_id');
+			if ( ($isc_luogonascita_id.val()=='' && $isc_statonascita_id.val()=='104') || ($isc_luogonascita_id.val()=='' && $isc_statonascita_id.val()=='') ) {
+				formOk = false;
+				$('<small id="isc_luogonascita_id-error" class="has-error">Usare l\'autocomplete per scegliere una città dall\'elenco</small>').insertAfter( $isc_luogonascita );
+				$isc_luogonascita.parent().addClass('has-error');
+			} else {
+				$('#isc_luogonascita_id-error').remove();
+				$isc_luogonascita.parent().removeClass('has-error');
+			}
+			let $isc_cittadinanza = $('#isc_cittadinanza');
 			let $isc_cittadinanza_id = $('#isc_cittadinanza_id');
 			if ( $isc_cittadinanza_id.val()=='' ) {
 				formOk = false;
-				$('<small id="isc_cittadinanza_id-error" class="has-error">Usare l\'autocomplete per scegliere una cittadinanza dall\'elenco</small>').insertAfter( $isc_cittadinanza_id );
-				$isc_cittadinanza_id.parent().addClass('has-error');
+				$('<small id="isc_cittadinanza_id-error" class="has-error">Usare l\'autocomplete per scegliere una cittadinanza dall\'elenco</small>').insertAfter( $isc_cittadinanza );
+				$isc_cittadinanza.parent().addClass('has-error');
 			} else {
 				$('#isc_cittadinanza_id-error').remove();
-				$isc_cittadinanza_id.parent().removeClass('has-error');
+				$isc_cittadinanza.parent().removeClass('has-error');
 			}
 			if ( formOk ) {
-				// form.submit();
 				let comuneNascita = $('#isc_luogonascita_id').val(),
 					comuneEsteroNascita = '',
 					isComuneEsteroNascita = false;
@@ -299,6 +324,7 @@ jQuery(document).ready(function($){
 				let _tNascita = $('#isc_datanascita_ws').val().split('/'),
 					dataNascita = _tNascita[2] + '-' + _tNascita[1] + '-' + _tNascita[0];
 				let o = {
+					"form": form,
 					"action": "ipws_submit_iscrizione",
 					"IDCorso": $('#isc_corso').val(),
 					"CodiceFiscale": $('#isc_codfis').val(),
@@ -324,9 +350,32 @@ jQuery(document).ready(function($){
 					_spinner = buttonMain.next('.spinner').addClass('is-active');
 				$.post(ajaxurl, o, function(data){
 					_spinner.removeClass('is-active');
+					if ( data.Esito=='Iscritto' ) {
+						// iscrizione OK
+						dataLayer.push({
+							'event': 'submit_form_iscrizione_ialman',
+							'nome_corso': $('#hid_isc_corso_nome').val()
+						});
+						o.form.submit();
+					} else if ( data.Esito=='GiaPresenteNelCorso' ) {
+						// già iscritto
+						alert( 'Attenzione: risulti già iscritto a questo corso. Contattataci se hai bisogno di ulteriori informazioni.' );
+					} else if ( data.Esito=='KO' ) {
+						alert( 'Impossibile completare l\'iscrizione. Per favore ricontrolla i dati. Contattataci se hai bisogno di aiuto.' );
+					}
 					buttonMain.removeAttr('disabled');
-				});
-			}
+				}, 'json');
+			} else return false;
 		}
+	});
+
+	// schede iscrizione
+	$('.link_scheda_iscrizione').click(function(){
+		let $this = $(this);
+		dataLayer.push({
+			'event': $this.attr('id'),
+			'nome_corso': $('#track_corso_name').val(),
+			'id_corso': $('#track_corso_id').val()
+		});
 	});
 });

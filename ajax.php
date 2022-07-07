@@ -182,14 +182,11 @@ function ipws_submit_iscrizione() {
         "CellularePersonale" => $_POST['CellularePersonale'],
     ];
     $res = json_decode( callWS( 'SET', $data ) );
-    var_dump( $res );
     if ( $res->Result==1 ) {
         echo json_encode( $res->ResponseData );
     } else {
         echo json_encode([
-            [
-                "Esito" => "KO",
-            ],
+            "Esito" => "KO",
         ]);
     }
     die();

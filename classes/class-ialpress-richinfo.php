@@ -516,7 +516,8 @@ class Ialpress_Richinfo extends Ialpress_Cpt_Helper
 
 			    <!-- Post variable to indicate user-submitted items -->
 				<input type="hidden" name="mrin_form_submit" value="1" />
-				<input type="hidden" name="rin_corso" value="<?php echo $get_corso ?>" />
+				<input type="hidden" name="rin_corso" id="hid_rin_corso" value="<?php echo $get_corso ?>" />
+				<input type="hidden" name="rin_corso_nome" id="hid_rin_corso_nome" value="<?php echo get_the_title( $get_corso ) ?>" />
 
 				<div class="form-row">
 					<div class="form-group col-md-6">

@@ -19,6 +19,7 @@ function mivarip_create_menu() {
 
 	//create menu entries
     add_menu_page( 'IalPress Welcome Page', 'IalPress', 'manage_options', 'ialpress-main', 'mivarip_main_page_output', 'dashicons-chart-pie', 20 );
+    if (get_option('iscrizioniws_attive')==1) add_submenu_page( 'ialpress-main', 'Iscrizioni IALMan', 'Iscrizioni IALMan', 'manage_options', 'edit.php?post_type=iscrizioniws', false );
     add_submenu_page( 'ialpress-main', 'Elenco Domande di Preiscrizione', 'Preiscrizioni', 'manage_options', 'ialpress-domande', 'mivarip_domande_page_output' );
     add_submenu_page( 'ialpress-main', 'IalPress Tools', 'Utilities', 'manage_options', 'mivarip-tools', 'mivarip_tools_page' );
     add_submenu_page( 'ialpress-main', 'IalPress Impostazioni', 'Settings', 'manage_options', 'mivarip-settings', 'mivarip_settings_page' );
@@ -347,6 +348,7 @@ function mivarip_domande_page_output() {
 function register_mivarip_settings() {
     register_setting( 'mivarip-settings-group', 'crea_bozze_corsi' );
 	register_setting( 'mivarip-settings-group', 'iscrizioni_attive' );
+    register_setting( 'mivarip-settings-group', 'iscrizioniws_attive' );
     register_setting( 'mivarip-settings-group', 'iscrizioni_speciali_attive' );
     register_setting( 'mivarip-settings-group', 'richieste_informazioni_attive' );
 }
@@ -399,6 +401,18 @@ function mivarip_settings_page() {
                 <td>
                     <label class="switch">
                       <input type="checkbox" name="richieste_informazioni_attive" value="1" <?php if (get_option('richieste_informazioni_attive')==1) echo 'checked="checked"' ?>>
+                      <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr valign="top">
+                <th scope="row" style="width: 300px;">
+                    Attiva pagina elenco "Iscrizioni IALMan"<br>
+                    <small>Da usare solo per eventuali controlli incrociati</small>
+                </th>
+                <td>
+                    <label class="switch">
+                      <input type="checkbox" name="iscrizioniws_attive" value="1" <?php if (get_option('iscrizioniws_attive')==1) echo 'checked="checked"' ?>>
                       <span class="slider round"></span>
                     </label>
                 </td>

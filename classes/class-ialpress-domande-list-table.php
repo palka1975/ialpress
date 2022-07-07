@@ -343,11 +343,19 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
                     $tipologia_corsi = get_term( 16, 'tipologia_corsi' );
                     $sede_corso = get_term( 22, 'sede_corso' );
                 } else {
-                    $terms = get_the_terms( $corso->ID, 'tipologia_corsi' );
-                    $tipologia_corsi = $terms[0];
+                    if ( is_object( $corso ) ) {                    
+                        $terms = get_the_terms( $corso->ID, 'tipologia_corsi' );
+                        if ( ! empty( $terms ) ) {
+                            $tipologia_corsi = $terms[0];
+                        }
+                    }
 
-                    $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
-                    $sede_corso = $terms_sedi[0];
+                    if ( is_object( $corso ) ) {
+                        $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
+                        if ( ! empty( $terms_sedi ) ) {
+                            $sede_corso = $terms_sedi[0];
+                        }
+                    } else $sede_corso = [''];
                 }
             }
             if ( ! empty( $filtra_tipologia ) ) {
@@ -361,7 +369,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
                     'email' => $row->mail,
                     'telefono' => $row->telefono,
                     'corso' => $row->descrizione,
-                    'sede_corso' => $sede_corso->name,
+                    'sede_corso' => is_object( $sede_corso ) ? $sede_corso->name : '',
                     'tipologia' => $tipologia_corsi,
                     'updated' => $row->update_timestamp,
                 );

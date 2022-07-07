@@ -244,7 +244,7 @@ class Ialpress_Cpt_Helper
 	    wp_enqueue_script( 'jquery-validation-add' );
 	    wp_register_script( 'jquery-validation-loc', $plugin_url.'assets/js/localization/messages_it.min.js', array( 'jquery' ) );
 	    wp_enqueue_script( 'jquery-validation-loc' );
-	    wp_register_script( 'misc-general-js', $plugin_url.'assets/js/mivar-iscrizioni.js', array( 'jquery' ) );
+	    wp_register_script( 'misc-general-js', $plugin_url.'assets/js/mivar-iscrizioni.js', array( 'jquery' ), '7.9' );
 	    wp_enqueue_script( 'misc-general-js' );
 	    // styles
 	    wp_register_style( 'jquery-ui-structure', $plugin_url.'assets/css/jquery-ui.structure.min.css' );
