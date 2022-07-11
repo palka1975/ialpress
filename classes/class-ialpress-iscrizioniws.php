@@ -193,7 +193,8 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		
 		<div class="row">
 			<div class="col-md-12">
-				<p> <?php _e('Grazie per esserti iscritto. Ecco i dati che abbiamo registrato.'); ?> </p>
+				<p><?php _e('Grazie per esserti iscritto. Ecco i dati che abbiamo registrato.'); ?></p>
+				<p><?php _e('Abbiamo spedito questo riepilogo alla mail che hai indicato nella registrazione. Se non hai ricevuto la mail, controlla la tua casella SPAM (posta indesiderata) o controlla che il tuo indirizzo mail sia stato inserito correttamente. In caso contrario ti consigliamo di compilare nuovamente il form di iscrizione partendo dalla scheda corso.') ?></p>
 				<?php
 					$nisc = esc_sql( $_GET['nisc'] );
 					$isc = get_post( $nisc );
@@ -325,8 +326,8 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 						<input type="email" class="form-control" id="isc_email" name="isc_email" placeholder="<?php _e( 'Email', 'mivar_iscrizioni_plugin' ) ?>" required>
 					</div>
 					<div class="form-group col-md-6">
-						<label for="isc_cellulare"><?php _e( 'Cellulare', 'mivar_iscrizioni_plugin' ) ?></label>
-						<input type="tel" class="form-control" id="isc_cellulare" name="isc_cellulare" placeholder="<?php _e( 'Cellulare', 'mivar_iscrizioni_plugin' ) ?>">
+						<label for="isc_cellulare"><?php _e( 'Cellulare', 'mivar_iscrizioni_plugin' ) ?> <small class="required">*</small></label>
+						<input type="tel" class="form-control" id="isc_cellulare" name="isc_cellulare" placeholder="<?php _e( 'Cellulare', 'mivar_iscrizioni_plugin' ) ?>" required>
 					</div>
 				</div>
 
