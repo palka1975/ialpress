@@ -187,8 +187,47 @@ function ipws_submit_iscrizione() {
     } else {
         echo json_encode([
             "Esito" => "KO",
+            "Messaggio" => $res->ResultMessage,
         ]);
     }
+    // TEST
+    // echo json_encode([
+    //     "Esito" => "Iscritto",
+    //     "Messaggio" => "CIAONE",
+    // ]);
+    die();
+}
+
+add_action( 'wp_ajax_ipws_finalize_iscrizione', 'ipws_finalize_iscrizione' );
+add_action( 'wp_ajax_nopriv_ipws_finalize_iscrizione', 'ipws_finalize_iscrizione' );
+function ipws_finalize_iscrizione() {
+    $isc_nome = $_POST['Nome'];
+    $isc_cognome = $_POST['Cognome'];
+    $isc_codfis = $_POST['CodiceFiscale'];
+    $isc_datanascita_ws = $_POST['DataNascita'];
+    $isc_sesso = $_POST['Sesso'];
+    $isc_indirizzo = $_POST['IndirizzoResidenza'];
+    $isc_citta = $_POST['citta'];
+    $isc_provincia = $_POST['provincia'];
+    $isc_cap = $_POST['CAPResidenza'];
+    $isc_stato = $_POST['stato'];
+    $isc_statonascita = $_POST['statonascita'];
+    $isc_luogonascita = $_POST['luogonascita'];
+    $isc_cittadinanza = $_POST['cittadinanza'];
+    $isc_email = $_POST['EMailPersonale'];
+    $isc_cellulare = $_POST['CellularePersonale'];
+    $isc_citta_id = $_POST['IDComuneResidenza'];
+    $isc_stato_id = $_POST['IDNazioneResidenza'];
+    $isc_statonascita_id = $_POST['IDNazioneNascita'];
+    $isc_luogonascita_id = $_POST['IDComuneNascita'];
+    $isc_cittadinanza_id = $_POST['IDPrimaCittadinanza'];
+    $isc_corso = $_POST['IDCorso'];
+    $isc_corso_civi = $_POST['corso_civi'];
+    $isc_corso_nome = $_POST['corso_nome'];
+
+    $ipws = new Ialpress_Iscrizioni_WS();
+    $html = $ipws->mivar_iscrizioniws_ajax_finalize($isc_nome,$isc_cognome,$isc_codfis,$isc_datanascita_ws,$isc_sesso,$isc_indirizzo,$isc_citta,$isc_provincia,$isc_cap,$isc_stato,$isc_statonascita,$isc_luogonascita,$isc_cittadinanza,$isc_email,$isc_cellulare,$isc_citta_id,$isc_stato_id,$isc_statonascita_id,$isc_luogonascita_id,$isc_cittadinanza_id,$isc_corso,$isc_corso_civi,$isc_corso_nome);
+    echo $html;
     die();
 }
 

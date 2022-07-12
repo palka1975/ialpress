@@ -475,6 +475,79 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		}
 	}
 
+	function mivar_iscrizioniws_ajax_finalize($isc_nome,$isc_cognome,$isc_codfis,$isc_datanascita_ws,$isc_sesso,$isc_indirizzo,$isc_citta,$isc_provincia,$isc_cap,$isc_stato,$isc_statonascita,$isc_luogonascita,$isc_cittadinanza,$isc_email,$isc_cellulare,$isc_citta_id,$isc_stato_id,$isc_statonascita_id,$isc_luogonascita_id,$isc_cittadinanza_id,$isc_corso,$isc_corso_civi,$isc_corso_nome) {
+		$isc = array(
+			'post_status' => 'publish',
+			'post_title' => $isc_cognome . ' ' . $isc_nome,
+			'post_type' => 'iscrizioniws',
+		);
+		$nid = wp_insert_post( $isc );
+		$pid = get_post( $nid );
+		
+		update_post_meta( $nid, 'isc_nome', sanitize_text_field( $isc_nome ) );
+		update_post_meta( $nid, 'isc_cognome', sanitize_text_field( $isc_cognome ) );
+		update_post_meta( $nid, 'isc_codfis', sanitize_text_field( $isc_codfis ) );
+		update_post_meta( $nid, 'isc_datanascita_ws', sanitize_text_field( $isc_datanascita_ws ) );
+		update_post_meta( $nid, 'isc_sesso', sanitize_text_field( $isc_sesso ) );
+		update_post_meta( $nid, 'isc_indirizzo', sanitize_text_field( $isc_indirizzo ) );
+		update_post_meta( $nid, 'isc_citta', sanitize_text_field( $isc_citta ) );
+		update_post_meta( $nid, 'isc_provincia', sanitize_text_field( $isc_provincia ) );
+		update_post_meta( $nid, 'isc_cap', sanitize_text_field( $isc_cap ) );
+		update_post_meta( $nid, 'isc_stato', sanitize_text_field( $isc_stato ) );
+		update_post_meta( $nid, 'isc_statonascita', sanitize_text_field( $isc_statonascita ) );
+		update_post_meta( $nid, 'isc_luogonascita', sanitize_text_field( $isc_luogonascita ) );
+		update_post_meta( $nid, 'isc_cittadinanza', sanitize_text_field( $isc_cittadinanza ) );
+		update_post_meta( $nid, 'isc_email', sanitize_text_field( $isc_email ) );
+		update_post_meta( $nid, 'isc_cellulare', sanitize_text_field( $isc_cellulare ) );
+		update_post_meta( $nid, 'isc_citta_id', sanitize_text_field( $isc_citta_id ) );
+		update_post_meta( $nid, 'isc_stato_id', sanitize_text_field( $isc_stato_id ) );
+		update_post_meta( $nid, 'isc_statonascita_id', sanitize_text_field( $isc_statonascita_id ) );
+		update_post_meta( $nid, 'isc_luogonascita_id', sanitize_text_field( $isc_luogonascita_id ) );
+		update_post_meta( $nid, 'isc_cittadinanza_id', sanitize_text_field( $isc_cittadinanza_id ) );
+		update_post_meta( $nid, 'isc_corso', $isc_corso );
+		update_post_meta( $nid, 'isc_corso_civi', $isc_corso_civi );
+		update_post_meta( $nid, 'isc_corso_nome', $isc_corso_nome );
+		$isc_timestamp = microtime(true);
+		update_post_meta( $nid, 'isc_timestamp', $isc_timestamp );
+
+
+		// invio mail ADMIN
+		$id_corso = $isc_corso_civi;
+		$nome_corso = $isc_corso_nome;
+		$is_pipol = has_term( 'pipol', 'tipologia_corsi', $id_corso ) || has_term( 'pipol-soft-skills', 'tipologia_corsi', $id_corso );
+		$subject = '[Civiform] Nuova richiesta di preiscrizione dal sito';
+		$body = '<p>Nuova richiesta di iscrizione al corso ' . $nome_corso . ' sul sito Civiform.it</p>' . $this->mivar_iscrizioniws_display_details($pid);
+		$headers = array('Content-Type: text/html; charset=UTF-8', 'From: Civiform.it <no-reply@civiform.it>');
+		wp_mail( $this->to_send, $subject, $body, $headers );
+
+		// invio mail al soggetto
+		$subject = '[Civiform] La tua iscrizione';
+		$mail_to = $_POST['isc_email'];
+		if ( $is_pipol ) {
+			$body = '<p>Grazie per esserti preiscritto al corso ' . $nome_corso . ', di seguito i dati che hai inserito:</p>' . $this->mivar_iscrizioniws_display_details($pid);
+			$body .= '<p>Ti ricordiamo che questa <strong>non è un\'iscrizione definitiva</strong>: per essere formalizzata, deve essere presa in carico dal Centro per l\'Impiego di competenza.<br>
+			Se non sei iscritto al programma PIPOL, registrati in modo autonomo sul portale: http://www.regione.fvg.it/rafvg/cms/RAFVG/formazione-lavoro/lavoro/FOGLIA135/ <br>
+			oppure recandoti presso un Centro per l’Impiego (http://www.regione.fvg.it/rafvg/cms/RAFVG/_config_/resp/tmpl-custom/mappairdat.jsp).<br>
+			Ti contatteremo al più presto per perfezionare la tua iscrizione.</p>';
+		}
+		else $body = '<p>Grazie per esserti iscritto al corso ' . $nome_corso . ', di seguito i dati che hai inserito:</p>' . $this->mivar_iscrizioniws_display_details($pid);
+
+		$body .= '<p>Per dubbi o informazioni, contattaci direttamente:<br>Cividale: +390432705811 - info@civiform.it<br>Trieste: +390409719811 - info@civiform.it</p>';
+		$headers = array('Content-Type: text/html; charset=UTF-8', 'From: Civiform.it <segreteria@civiform.it>');
+		wp_mail( $mail_to, $subject, $body, $headers );
+
+		// return html
+		$html = '<div class="col-md-12">';
+		$html .= '<p>' . __('Grazie per esserti iscritto. Ecco i dati che abbiamo registrato.') . '</p>';
+		$html .= '<p>' . __('Abbiamo spedito questo riepilogo alla mail che hai indicato nella registrazione. Se non hai ricevuto la mail, controlla la tua casella SPAM (posta indesiderata) o controlla che il tuo indirizzo mail sia stato inserito correttamente. In caso contrario ti consigliamo di compilare nuovamente il form di iscrizione partendo dalla scheda corso.') . '</p>';
+		if ( is_object($pid) ) {
+			$html .= $this->mivar_iscrizioniws_display_details($pid);
+		}
+		$html .= '</div>';
+
+		return $html;
+	}		
+
 	function mivar_iscrizioniws_display_details( $isc ) { 
 		$isc_nome = esc_html( get_post_meta( $isc->ID, 'isc_nome', true ) );
 		$isc_cognome = esc_html( get_post_meta( $isc->ID, 'isc_cognome', true ) );

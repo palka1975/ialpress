@@ -324,7 +324,6 @@ jQuery(document).ready(function($){
 				let _tNascita = $('#isc_datanascita_ws').val().split('/'),
 					dataNascita = _tNascita[2] + '-' + _tNascita[1] + '-' + _tNascita[0];
 				let o = {
-					"form": form,
 					"action": "ipws_submit_iscrizione",
 					"IDCorso": $('#isc_corso').val(),
 					"CodiceFiscale": $('#isc_codfis').val(),
@@ -349,21 +348,37 @@ jQuery(document).ready(function($){
 				let buttonMain = $('#ipws_submit_main').attr('disabled', true),
 					_spinner = buttonMain.next('.spinner').addClass('is-active');
 				$.post(ajaxurl, o, function(data){
-					_spinner.removeClass('is-active');
+					console.log(data)
 					if ( data.Esito=='Iscritto' ) {
 						// iscrizione OK
 						dataLayer.push({
 							'event': 'submit_form_iscrizione_ialman',
 							'nome_corso': $('#hid_isc_corso_nome').val()
 						});
-						o.form.submit();
+						// $('#form_preiscrizione_ws').get(0).submit();
+						o.action = "ipws_finalize_iscrizione";
+						o.citta = $('#isc_citta').val();
+						o.provincia = $('#isc_provincia').val();
+						o.stato = $('#isc_stato').val();
+						o.statonascita = $('#isc_statonascita').val();
+						o.luogonascita = $('#isc_luogonascita').val();
+						o.cittadinanza = $('#isc_cittadinanza').val();
+						o.corso_civi = $('#isc_corso_civi').val();
+						o.corso_nome = $('#hid_isc_corso_nome').val();
+						$.post(ajaxurl, o, function(data){
+							$('#form_preiscrizione_ws').replaceWith(data);
+						});
 					} else if ( data.Esito=='GiaPresenteNelCorso' ) {
 						// già iscritto
 						alert( 'Attenzione: risulti già iscritto a questo corso. Contattataci se hai bisogno di ulteriori informazioni.' );
+						_spinner.removeClass('is-active');
+						buttonMain.removeAttr('disabled');
 					} else if ( data.Esito=='KO' ) {
+						// alert( data.Messaggio );
 						alert( 'Impossibile completare l\'iscrizione. Per favore ricontrolla i dati. Contattataci se hai bisogno di aiuto.' );
+						_spinner.removeClass('is-active');
+						buttonMain.removeAttr('disabled');
 					}
-					buttonMain.removeAttr('disabled');
 				}, 'json');
 			} else return false;
 		}
