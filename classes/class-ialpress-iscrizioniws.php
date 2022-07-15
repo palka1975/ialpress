@@ -522,7 +522,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 
 		// invio mail al soggetto
 		$subject = '[Civiform] La tua iscrizione';
-		$mail_to = $_POST['isc_email'];
+		$mail_to = $isc_email;
 		if ( $is_pipol ) {
 			$body = '<p>Grazie per esserti preiscritto al corso ' . $nome_corso . ', di seguito i dati che hai inserito:</p>' . $this->mivar_iscrizioniws_display_details($pid);
 			$body .= '<p>Ti ricordiamo che questa <strong>non è un\'iscrizione definitiva</strong>: per essere formalizzata, deve essere presa in carico dal Centro per l\'Impiego di competenza.<br>

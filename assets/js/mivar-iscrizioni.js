@@ -393,4 +393,13 @@ jQuery(document).ready(function($){
 			'id_corso': $('#track_corso_id').val()
 		});
 	});
+
+	// link generico al form di iscrizione
+	$('.to_form_ialman').click(function(){
+		let $this = $(this);
+		dataLayer.push({
+			'event': 'btn_iscriviti',
+			'nome_corso': $this.attr('id')
+		});
+	});
 });

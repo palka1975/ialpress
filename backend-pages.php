@@ -61,7 +61,7 @@ function do_export_csv() {
             if ( ! empty( $_REQUEST['dom_status'] ) AND $_REQUEST['dom_status']=='archived' ) $args['archived'] = 1;
             $_ialman = new Ialman_Ops();
             $results = $_ialman->getDomande( $args );
-            echo "Nome;Cognome;Sesso;Indirizzo;Citta';Cap;Provincia;Data di nascita;Luogo di nascita;Codoce Fiscale;Telefono;Cellulare;Email;Titolo di studio;Corso;Sede;Data Registrazione\r\n";
+            echo "Nome;Cognome;Sesso;Indirizzo;Citta';Cap;Provincia;Data di nascita;Luogo di nascita;Codoce Fiscale;Telefono;Cellulare;Email;Corso;Sede;Data Registrazione\r\n";
             foreach ( $results as $isc ) {
                 $isc_nome = esc_html( $isc->nome );
                 $isc_cognome = esc_html( $isc->cognome );
@@ -76,14 +76,13 @@ function do_export_csv() {
                 $isc_telefono = esc_html( $isc->telefono );
                 $isc_cellulare = esc_html( $isc->cellulare );
                 $isc_email = esc_html( $isc->mail );
-                $isc_titolo_di_studio = esc_html( $isc->titolo_studio );
-                $isc_corso = intval( $isc->descrizione );
+                $isc_corso = $isc->descrizione;
                 $corso = $_ialman->getImportedCommessa( $isc->id_corso );
                 $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
                 $sedecorso = $terms_sedi[0];
                 $ts_richiesta = date('d/m/Y', strtotime( $isc->data_preiscrizione ) );
  
-                echo '"' . $isc_nome . '";"' . $isc_cognome . '";"' . $isc_sesso . '";"' . $isc_indirizzo . '";"' . $isc_citta . '";"' . $isc_cap . '";"' . $isc_provincia . '";"' . $isc_datanascita . '";"' . $isc_luogonascita . '";"' . $isc_codfis . '";"' . $isc_telefono . '";"' . $isc_cellulare . '";"' . $isc_email . '";"' . $isc_titolo_di_studio . '";"' . $corso . '";"' . $sedecorso->name . '";"' . $ts_richiesta . '"' . "\r\n";
+                echo '"' . $isc_nome . '";"' . $isc_cognome . '";"' . $isc_sesso . '";"' . $isc_indirizzo . '";"' . $isc_citta . '";"' . $isc_cap . '";"' . $isc_provincia . '";"' . $isc_datanascita . '";"' . $isc_luogonascita . '";"' . $isc_codfis . '";"' . $isc_telefono . '";"' . $isc_cellulare . '";"' . $isc_email . '";"' . $isc_corso . '";"' . $sedecorso->name . '";"' . $ts_richiesta . '"' . "\r\n";
 
                 // wp_update_post(array(
                 //  'ID' => $isc->ID,
