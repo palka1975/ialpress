@@ -224,9 +224,10 @@ function ipws_finalize_iscrizione() {
     $isc_corso = $_POST['IDCorso'];
     $isc_corso_civi = $_POST['corso_civi'];
     $isc_corso_nome = $_POST['corso_nome'];
+    $isc_newsletter = $_POST['newsletter'];
 
     $ipws = new Ialpress_Iscrizioni_WS();
-    $html = $ipws->mivar_iscrizioniws_ajax_finalize($isc_nome,$isc_cognome,$isc_codfis,$isc_datanascita_ws,$isc_sesso,$isc_indirizzo,$isc_citta,$isc_provincia,$isc_cap,$isc_stato,$isc_statonascita,$isc_luogonascita,$isc_cittadinanza,$isc_email,$isc_cellulare,$isc_citta_id,$isc_stato_id,$isc_statonascita_id,$isc_luogonascita_id,$isc_cittadinanza_id,$isc_corso,$isc_corso_civi,$isc_corso_nome);
+    $html = $ipws->mivar_iscrizioniws_ajax_finalize($isc_nome,$isc_cognome,$isc_codfis,$isc_datanascita_ws,$isc_sesso,$isc_indirizzo,$isc_citta,$isc_provincia,$isc_cap,$isc_stato,$isc_statonascita,$isc_luogonascita,$isc_cittadinanza,$isc_email,$isc_cellulare,$isc_citta_id,$isc_stato_id,$isc_statonascita_id,$isc_luogonascita_id,$isc_cittadinanza_id,$isc_corso,$isc_corso_civi,$isc_corso_nome,$isc_newsletter);
     echo $html;
     die();
 }

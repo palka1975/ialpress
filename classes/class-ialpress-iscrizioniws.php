@@ -61,6 +61,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 // isc_statonascita_id
 // isc_luogonascita_id
 // isc_cittadinanza_id
+// isc_newsletter
 
 	function mivar_iscrizioniws_admin_init() {
 		$plugin = new self();
@@ -85,6 +86,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		$isc_timestamp = get_post_meta( $isc->ID, 'isc_timestamp', true );
 		$isc_corso = intval( get_post_meta( $isc->ID, 'isc_corso', true ) );
 		$isc_corso_nome = get_post_meta( $isc->ID, 'isc_corso_nome', true );
+		$isc_newsletter = intval( get_post_meta( $isc->ID, 'isc_newsletter', true ) );
 		?>
 		<table class="table table-bordered">
 			<tbody>
@@ -169,6 +171,15 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 						if ( !empty($isc_corso_nome) ) echo '<p>' . $isc_corso_nome . '</p>';
 						else echo '<p>n.a.</p>';
 						?>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 201px">Iscrizione Newsletter</td>
+					<td>
+						<select style="width: 80px" name="isc_newsletter">
+							<option value="1" <?php selected( 1, $isc_newsletter ); ?>>Sì</option>
+							<option value="0" <?php selected( 0, $isc_newsletter ); ?>>No</option>
+						</select>
 					</td>
 				</tr>
 				<tr>
@@ -348,6 +359,16 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 				</div>
 
 				<div class="form-row">
+					<div class="form-group col-sm-12">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" is="isc_newsletter" name="isc_newsletter" value="1"> <?php _e('Iscrivimi alla newsletter per tenermi informato sulle novità di Civiform.<br>La newsletter ti verrà inviata nella tua casella di posta elettronica rispettando scrupolosamente la nostra politica sulla privacy.', 'mivar_iscrizioni_plugin') ?>
+							</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-row">
 					<div class="form-group col-md-12">
 						<input type="hidden" id="isc_citta_id" name="isc_citta_id" value="">
 						<input type="hidden" id="isc_stato_id" name="isc_stato_id" value="">
@@ -392,6 +413,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		// $_POST['isc_statonascita_id']
 		// $_POST['isc_luogonascita_id']
 		// $_POST['isc_cittadinanza_id']
+		// $_POST['isc_newsletter']
 
 		if ( PHP_SESSION_NONE == session_status() ) {
 			session_start();
@@ -475,7 +497,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		}
 	}
 
-	function mivar_iscrizioniws_ajax_finalize($isc_nome,$isc_cognome,$isc_codfis,$isc_datanascita_ws,$isc_sesso,$isc_indirizzo,$isc_citta,$isc_provincia,$isc_cap,$isc_stato,$isc_statonascita,$isc_luogonascita,$isc_cittadinanza,$isc_email,$isc_cellulare,$isc_citta_id,$isc_stato_id,$isc_statonascita_id,$isc_luogonascita_id,$isc_cittadinanza_id,$isc_corso,$isc_corso_civi,$isc_corso_nome) {
+	function mivar_iscrizioniws_ajax_finalize($isc_nome,$isc_cognome,$isc_codfis,$isc_datanascita_ws,$isc_sesso,$isc_indirizzo,$isc_citta,$isc_provincia,$isc_cap,$isc_stato,$isc_statonascita,$isc_luogonascita,$isc_cittadinanza,$isc_email,$isc_cellulare,$isc_citta_id,$isc_stato_id,$isc_statonascita_id,$isc_luogonascita_id,$isc_cittadinanza_id,$isc_corso,$isc_corso_civi,$isc_corso_nome,$isc_newsletter) {
 		$isc = array(
 			'post_status' => 'publish',
 			'post_title' => $isc_cognome . ' ' . $isc_nome,
@@ -507,6 +529,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		update_post_meta( $nid, 'isc_corso', $isc_corso );
 		update_post_meta( $nid, 'isc_corso_civi', $isc_corso_civi );
 		update_post_meta( $nid, 'isc_corso_nome', $isc_corso_nome );
+		update_post_meta( $nid, 'isc_newsletter', $isc_newsletter );
 		$isc_timestamp = microtime(true);
 		update_post_meta( $nid, 'isc_timestamp', $isc_timestamp );
 
@@ -565,6 +588,7 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 		$isc_email = esc_html( get_post_meta( $isc->ID, 'isc_email', true ) );
 		$isc_cellulare = esc_html( get_post_meta( $isc->ID, 'isc_cellulare', true ) );
 		$isc_corso_nome = esc_html( get_post_meta( $isc->ID, 'isc_corso_nome', true ) );
+		$isc_newsletter = intval( get_post_meta( $isc->ID, 'isc_newsletter', true ) );
 
 		$html = '<table class="table table-bordered">
 			<tbody>
@@ -631,6 +655,10 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 				<tr>
 					<td style="width: 201px">Corso</td>
 					<td>' . $isc_corso_nome . '</td>
+				</tr>
+				<tr>
+					<td style="width: 201px">Iscrizione Newsletter</td>
+					<td>' . ($isc_newsletter==1 ? 'Sì' : 'No') . '</td>
 				</tr>
 			</tbody>
 		</table>';
@@ -709,6 +737,9 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 			}
 			if ( isset( $_POST['isc_corso_nome'] ) ) {
 				update_post_meta( $post_id, 'isc_corso_nome', $_POST['isc_corso_nome'] );
+			}
+			if ( isset( $_POST['isc_newsletter'] ) ) {
+				update_post_meta( $post_id, 'isc_newsletter', sanitize_text_field( $_POST['isc_newsletter'] ) );
 			}
 			if ( isset( $_POST['isc_timestamp'] ) ) {
 				$isc_timestamp = $_POST['isc_timestamp'];

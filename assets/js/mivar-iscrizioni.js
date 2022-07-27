@@ -365,6 +365,7 @@ jQuery(document).ready(function($){
 						o.cittadinanza = $('#isc_cittadinanza').val();
 						o.corso_civi = $('#isc_corso_civi').val();
 						o.corso_nome = $('#hid_isc_corso_nome').val();
+						o.newsletter = $('#isc_newsletter').is(':checked') ? 1 : 0;
 						$.post(ajaxurl, o, function(data){
 							$('#form_preiscrizione_ws').replaceWith(data);
 						});
