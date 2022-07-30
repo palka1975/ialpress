@@ -335,7 +335,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
         foreach ($results as $row) {
             $insert = true;
             $ind = $row->indirizzo . '<br>' . $row->cap . ' ' . $row->recapito . ' (' . $row->prov . ')<br>' . $row->stato;
-            $corso = $_ialman->getImportedCommessa( $row->id_corso );
+            $corso = $_ialman->getImportedCommessa( $row->id_corso )[0];
             $tipologia_corsi = false;
             if ( ! empty( $corso ) OR $row->id_corso=='73594' ) {
                 if ( $row->id_corso=='73594' ) {
