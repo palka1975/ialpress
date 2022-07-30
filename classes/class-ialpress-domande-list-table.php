@@ -49,6 +49,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
             case 'email':
             case 'telefono':
             case 'corso':
+            case 'newsletter':
             case 'sede_corso':
                 return $item[$column_name];
                 break;
@@ -144,6 +145,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
             'corso'         => 'Corso',
             'sede_corso'    => 'Sede Corso',
             'tipologia'     => 'Tipologia Corso',
+            'newsletter'    => 'Newsletter',
             'updated'       => 'Data Preiscrizione',
         );
         return $columns;
@@ -335,6 +337,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
         foreach ($results as $row) {
             $insert = true;
             $ind = $row->indirizzo . '<br>' . $row->cap . ' ' . $row->recapito . ' (' . $row->prov . ')<br>' . $row->stato;
+            $nl = intval( get_post_meta( $row->ID, 'isc_newsletter', true ) );
             $corso = $_ialman->getImportedCommessa( $row->id_corso )[0];
             $tipologia_corsi = false;
             if ( ! empty( $corso ) OR $row->id_corso=='73594' ) {
@@ -369,6 +372,7 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
                     'email' => $row->mail,
                     'telefono' => $row->telefono,
                     'corso' => $row->descrizione,
+                    'newsletter' => $nl==1 ? 'Sì' : 'No',
                     'sede_corso' => is_object( $sede_corso ) ? $sede_corso->name : '',
                     'tipologia' => $tipologia_corsi,
                     'updated' => $row->update_timestamp,
