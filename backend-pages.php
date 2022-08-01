@@ -77,7 +77,7 @@ function do_export_csv() {
                 $isc_cellulare = esc_html( $isc->cellulare );
                 $isc_email = esc_html( $isc->mail );
                 $isc_corso = $isc->descrizione;
-                $corso = $_ialman->getImportedCommessa( $isc->id_corso );
+                $corso = $_ialman->getImportedCommessa( $isc->id_corso )[0];
                 $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
                 $sedecorso = $terms_sedi[0];
                 $ts_richiesta = date('d/m/Y', strtotime( $isc->data_preiscrizione ) );
