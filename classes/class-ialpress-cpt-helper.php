@@ -164,20 +164,40 @@ class Ialpress_Cpt_Helper
 		"Altro",
 	);
 
-	protected $testo_info_privacy = "INFORMATIVA E CONSENSO PER IL TRATTAMENTO DEI DATI PERSONALI
-		(artt.13 e 23, d.lgs. n.196/2003)
-		Il decreto legislativo n.196/2003 prevede che il trattamento dei dati personali si svolga nel rispetto dei diritti, delle libertà fondamentali, nonché della dignità delle persone, con particolare riferimento alla riservatezza ed all'identità personale. Il trattamento dei Suoi dati personali avverrà, conformemente a quanto previsto dalla legge, secondo criteri di correttezza, liceità, adeguatezza e trasparenza, tutelando la Sua riservatezza e i Suoi diritti.
-		Ai sensi dell'art.13 del d.lgs. n.196/2003, La informiamo quindi che:
-		Il trattamento ha le seguenti finalità: trattare e conservare i dati richiesti da Civiform soc. coop. sociale per l'invio della news letter ed altre comunicazioni relative alle iscrizioni on-line dei corsi di formazione;
-		Il trattamento sarà effettuato con le seguenti modalità: i dati raccolti verranno trasferiti in archivio elettronico oltre che conservati così come vengono forniti.
-		Il conferimento dei dati è facoltativo; in assenza di tali dati non sarà peraltro possibile dare seguito all'invio delle comunicazioni.
-		I suoi dati (nome, cognome, indirizzo mail e cellulare) verranno comunicati a: Civiform soc. coop. sociale, Cividale (cap 33043) - UD  viale Gemona, 7, ai fini dell'invio delle newsletter e di altre eventuali comunicazioni.
-		In relazione al trattamento Lei potrà esercitare i diritti di cui all'art.7 del d.lgs. n.196/2003;
-		Il titolare del trattamento è Civiform soc. coop. sociale.
-		Il responsabile del trattamento è  ANDREA ROSSATO.
-		Avendo compilato questo modulo e premuto il pulsante \"Invia\" di questa pagina, ricevute le informazioni di cui all'art.13 del d.lgs. n.196/2003, sopra riportate, presto il mio consenso al trattamento dei dati personali da voi richiesti.
+	protected $testo_info_privacy = "INFORMAZIONI SUL TRATTAMENTO DEI DATI PERSONALI per iscrizione ad attività CIVIFORM ai sensi dell'articolo 13 del Regolamento (UE) 2016/679
 
-		Letta la presente nota informativa, esprimo dunque il mio consenso al trattamento ed alla comunicazione dei miei dati personali e ai correlati trattamenti ai soggetti che svolgono le attività indicate nella stessa informativa. Sono consapevole che in mancanza del mio consenso la registrazione non potrà essere eseguita.";
+Ai sensi del Regolamento (UE) 2016/679 (di seguito \"Regolamento\"), la presente informativa descrive le modalità di trattamento dei dati personali di coloro che aderiscono al servizio offerto da Civiform.
+
+TITOLARE DEL TRATTAMENTO  Il Titolare del trattamento dei dati è:  Civiform Soc.Coop.Sociale  Sede Legale: Viale Gemona 5, 33043 Cividale del Friuli (UD) privacy@civiform.it
+
+RESPONSABILE DELLA PROTEZIONE DEI DATI   Responsabile della Protezione dei Dati (RPD-DPO), designato dal Titolare del trattamento, è l'Avv. Antonella Fiaschi - avvocatofiaschi@gmail.com
+FINALITÀ DI TRATTAMENTO   I dati inviati per scelta dell'utente e volontariamente verranno utilizzati per l'invio di dati necessari alla prestazione del servizio offerto da Civiform, come da richiesta dell'utente così che l'utente interessato possa ricevere aderire a specifiche attività. L'interessato ha comunque la possibilità di cambiare in qualsiasi momento le preferenze espresse qualora lo ritenga opportuno, inviando una mail a: privacy@civiform.it. I dati personali potranno essere trattati, previo consenso, attraverso strumenti automatizzati (quali email ed SMS) nonché mezzi tradizionali (come il contatto telefonico tramite operatore per consentire a Civiform: 
+di inviare gli estremi del servizio offerto
+utilizzare i dati dell'utente per la preiscrizione al servizio offerto 
+attivare il servizio stesso
+L'interessato ha diritto di opporsi in toto o in parte in qualsiasi momento al trattamento dei propri dati per motivi legittimi ancorchè pertinenti allo scopo della raccolta, per l'invio di materiale commerciale-promozionale ulteriore rispetto al servizio richiesto.
+
+NATURA DEL CONFERIMENTO  Il conferimento dei dati è facoltativo, pur tuttavia l'eventuale rifiuto a rispondere comporta l'impossibilità per il titolare di dar corso alle richieste di adesione al servizio proposto.
+BASE GIURIDICA DEL TRATTAMENTO
+La base giuridica del trattamento è il consenso al trattamento dei suddetti dati, consenso che è necessario. Il consenso si considera prestato flaggando le apposite caselle poste nel form di iscrizione on-line.
+
+MODALITÀ DI TRATTAMENTO   Il trattamento dei dati è eseguito attraverso procedure informatiche o comunque mezzi telematici e supporti cartacei ad opera di soggetti, interni od esterni, a ciò appositamente incaricati ed autorizzati e impegnati alla riservatezza. I dati sono trattati e conservati con strumenti idonei a garantirne la sicurezza, l'integrità e la riservatezza mediante l'adozione di misure di sicurezza adeguate come previsto dalla normativa.
+
+TIPOLOGIA DI DATI TRATTATI 
+Ai fini della facoltativa ricezione della Newsletter saranno trattati i dati personali identificativi forniti dall'utente (es. nome, cognome, email, numero di telefono, ecc.) per la fruizione del servizio.
+
+DESTINATARI DEI DATI   I dati potranno essere trattati dai dipendenti o collaboratori delle funzioni aziendali deputate al perseguimento delle finalità sopra indicate, che sono stati espressamente autorizzati al trattamento e che hanno ricevuto adeguate istruzioni operative.  I dati possono altresì essere trattati, per conto di Civiform, da soggetti esterni nominati come responsabili del trattamento, a cui sono impartite adeguate istruzioni operative. Tali soggetti sono essenzialmente ricompresi in realtà operanti nel settore informatico e di assistenza informatica e società di hosting, società di web-marketing e telemarketing) ove necessarie per le finalità di cui alla presente informativa. L'elenco dei Responsabili esterni del Trattamento dei Dati Personali è disponibile presso la sede del Titolare. I dati potranno essere comunicati ad Enti esterni quali Amministrazioni Regionali, Enti locali, Inail per copi specifici precisi e definiti, per tutti gli adempimenti di norme cogenti.
+
+PERIODO DI CONSERVAZIONE DEI DATI   I dati sono conservati fino alla richiesta dell'interessato di eventuale opposizione all'invio e alla volontà di questi di rinunciare alla ricezione della newsletter cliccando sul link di cancellazione dell'iscrizione posta in calce a ciascuna comunicazione e comunque fino a 60 mesi successivi, ai fini del completamento delle attività amministrative, oltre che per il tempo necessario ad adempiere gli obblighi di legge.
+
+DIRITTI DEGLI INTERESSATI   Gli interessati hanno il diritto di ottenere dal Titolare, l'accesso ai dati personali e la rettifica o la cancellazione degli stessi o la limitazione del trattamento che li riguarda o di opporsi al trattamento (artt. 15 e ss. del Regolamento). L'apposita istanza può essere presentata in ogni momento dall'interessato contattando il Titolare o il Responsabile della protezione dei dati, come sopra individuati.
+
+DIRITTO DI RECLAMO   Gli interessati che ritengono che il trattamento dei dati personali a loro riferiti avvenga in violazione di quanto previsto dal Regolamento hanno il diritto di proporre reclamo al Garante, come previsto dall'art. 77 del Regolamento stesso, o di adire le opportune sedi giudiziarie (art. 79 del Regolamento).
+
+MODIFICHE E AGGIORNAMENTI   La presente informativa può essere soggetta a modifiche ed integrazioni, anche quale conseguenza dell'aggiornamento della normativa applicabile relativa alla protezione delle persone fisiche con riguardo al trattamento dei dati personali nonché alla libera circolazione di tali dati. 
+
+
+DATA ULTIMO AGGIORNAMENTO: 19 ottobre 2022";
 
 	public static function register()
 	{
