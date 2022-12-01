@@ -5,7 +5,7 @@ class Ialpress_Cpt_Helper
 	protected $to_send = array(
 		// 'andrea.varnier@gmail.com',
 		'info@civiform.it',
-		'segreteria@civiform.it',
+		// 'segreteria@civiform.it',
 	);
 
 	protected $sessi = array('M', 'F');
