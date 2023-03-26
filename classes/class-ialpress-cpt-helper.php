@@ -212,11 +212,7 @@ DATA ULTIMO AGGIORNAMENTO: 19 ottobre 2022";
 		function id_commessa_meta_box() {
 			global $post;
 			$corso_ialman = get_post_meta( $post->ID, 'corso_ialman', true );
-			if ( empty( $corso_ialman ) ) {
-				echo '<input id="associa_ialman" value="" /> <button class="button button-primary" id="action_associa" data-post-id="' . $post->ID . '">Associa</button> <span class="spinner" style="float:none;"></span>';
-			} else {
-				echo '<input type="text" readonly value="' . $corso_ialman . '">';
-			}
+			echo '<input id="associa_ialman" value="'.$corso_ialman.'" /> <button class="button button-primary" id="action_associa" data-post-id="' . $post->ID . '">Associa</button> <span class="spinner" style="float:none;"></span>';
 		}
 		add_action( 'admin_footer', 'my_action_javascript' );
 		function my_action_javascript() {
@@ -236,8 +232,8 @@ DATA ULTIMO AGGIORNAMENTO: 19 ottobre 2022";
 					if ( o.id_commessa!='' ) {
 						_spinner.addClass('is-active');
 						$.post( ajax_url, o, function(data){
-							$('#associa_ialman').attr('readonly', true);
-							$this.remove();
+							// $('#associa_ialman').attr('readonly', true);
+							$this.blur();
 							_spinner.removeClass('is-active');
 						}, 'json' );
 					} else alert( "Inserire codice commessa IALMAN" );
