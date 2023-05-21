@@ -247,7 +247,29 @@ class Ialpress_Iscrizioni_WS extends Ialpress_Cpt_Helper
 			    <input type="hidden" name="misc_form_submitws" value="1" />
 				<input type="hidden" name="isc_corso" id="isc_corso" value="<?php echo $corso_ialman ?>" />
 				<input type="hidden" name="isc_corso_civi" id="isc_corso_civi" value="<?php echo $get_corso ?>" />
-				<input type="hidden" name="isc_corso_nome" id="hid_isc_corso_nome" value="<?php echo get_the_title( $get_corso ) ?>" />
+				<input type="hidden" name="isc_corso_nome" id="hid_isc_corso_nome" value="<?php echo sanitize_title( get_the_title( $get_corso ) ) ?>" />
+				<?php
+					$terms = get_the_terms( $get_corso, 'tipologia_corsi' );
+					$tipologie = [];
+					foreach( $terms as $term ) {
+						$tipologie[] = $term->slug;
+					}
+					if ( in_array( 'ifts-post-diploma', $tipologie ) ) $tipo_corso = 'IFTS';
+					else if ( in_array( 'piazzagol', $tipologie ) ) $tipo_corso = 'PG';
+					// else if ( in_array( 'pipol-soft-skills', $tipologie ) ) $tipo_corso = 'PSR';
+					else $tipo_corso = '';
+
+					$terms = get_the_terms( $get_corso, 'sede_corso' );
+					$sedi = [];
+					foreach( $terms as $term ) {
+						$sedi[] = $term->slug;
+					}
+					if ( in_array( 'trieste', $sedi ) ) $sede_corso = 'TS';
+					else if ( in_array( 'cividale', $sedi ) ) $sede_corso = 'CIVI';
+					else $sede_corso = '';
+				?>
+				<input type="hidden" name="isc_corso_tipo" id="hid_isc_corso_tipo" value="<?php echo $tipo_corso ?>" />
+				<input type="hidden" name="isc_corso_sede" id="hid_isc_corso_sede" value="<?php echo $sede_corso ?>" />
 
 				<h4>Dati anagrafici</h4>
 				<div class="form-row">

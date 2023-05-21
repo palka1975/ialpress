@@ -361,7 +361,9 @@ jQuery(document).ready(function($){
 						// iscrizione OK
 						dataLayer.push({
 							'event': 'submit_form_iscrizione_ialman',
-							'nome_corso': $('#hid_isc_corso_nome').val()
+							'nome_corso': $('#hid_isc_corso_nome').val(),
+							'tipo_corso': $('#hid_isc_corso_tipo').val(),
+							'sede_corso': $('#hid_isc_corso_sede').val()
 						});
 						// $('#form_preiscrizione_ws').get(0).submit();
 						o.action = "ipws_finalize_iscrizione";
