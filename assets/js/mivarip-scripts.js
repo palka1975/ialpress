@@ -12,9 +12,12 @@ jQuery(document).ready(function($){
 			};
 		showLoader('#update_console');
 		$.post(ajax_object.ajax_url, o, function(data){
-			$('#update_console').html('<p>' + data.table + '<br/>Inseriti: ' + data.inseriti + '<br/>Aggiornati: ' + data.aggiornati + '</p>');
-			$this.parent().find('.latest').text( data.data );
-			$('.update-table, #resync_corsi').removeAttr('disabled');
+			console.log(data)
+			if ( typeof data!='undefined' ) {
+				$('#update_console').html('<p>' + data.table + '<br/>Inseriti: ' + data.inseriti + '<br/>Aggiornati: ' + data.aggiornati + '</p>');
+				$this.parent().find('.latest').text( data.data );
+				$('.update-table, #resync_corsi').removeAttr('disabled');
+			}
 		}, 'json');
 	});
 	$('#resync_corsi').click(function(e){

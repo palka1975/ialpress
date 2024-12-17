@@ -338,28 +338,33 @@ class Ialpress_Domande_List_Table extends WP_List_Table {
             $insert = true;
             $ind = $row->indirizzo . '<br>' . $row->cap . ' ' . $row->recapito . ' (' . $row->prov . ')<br>' . $row->stato;
             $nl = intval( get_post_meta( $row->ID, 'isc_newsletter', true ) );
-            $corso = $_ialman->getImportedCommessa( $row->id_corso )[0];
-            $tipologia_corsi = false;
-            if ( ! empty( $corso ) OR $row->id_corso=='73594' ) {
-                if ( $row->id_corso=='73594' ) {
-                    // for testing purposes only
-                    $tipologia_corsi = get_term( 16, 'tipologia_corsi' );
-                    $sede_corso = get_term( 22, 'sede_corso' );
-                } else {
-                    if ( is_object( $corso ) ) {                    
-                        $terms = get_the_terms( $corso->ID, 'tipologia_corsi' );
-                        if ( ! empty( $terms ) ) {
-                            $tipologia_corsi = $terms[0];
+            $imp_commessa = $_ialman->getImportedCommessa( $row->id_corso );
+            if ( ! empty( $imp_commessa ) ) {
+                $corso = $imp_commessa[0];
+                $tipologia_corsi = false;
+                if ( ! empty( $corso ) OR $row->id_corso=='73594' ) {
+                    if ( $row->id_corso=='73594' ) {
+                        // for testing purposes only
+                        $tipologia_corsi = get_term( 16, 'tipologia_corsi' );
+                        $sede_corso = get_term( 22, 'sede_corso' );
+                    } else {
+                        if ( is_object( $corso ) ) {                    
+                            $terms = get_the_terms( $corso->ID, 'tipologia_corsi' );
+                            if ( ! empty( $terms ) ) {
+                                $tipologia_corsi = $terms[0];
+                            }
                         }
-                    }
 
-                    if ( is_object( $corso ) ) {
-                        $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
-                        if ( ! empty( $terms_sedi ) ) {
-                            $sede_corso = $terms_sedi[0];
-                        }
-                    } else $sede_corso = [''];
+                        if ( is_object( $corso ) ) {
+                            $terms_sedi = get_the_terms( $corso->ID, 'sede_corso' );
+                            if ( ! empty( $terms_sedi ) ) {
+                                $sede_corso = $terms_sedi[0];
+                            }
+                        } else $sede_corso = [''];
+                    }
                 }
+            } else {
+                $insert = false;
             }
             if ( ! empty( $filtra_tipologia ) ) {
                 if ( $tipologia_corsi->term_id != $filtra_tipologia ) $insert = false;

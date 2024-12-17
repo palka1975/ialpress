@@ -9,7 +9,7 @@ class Ialman_Ops
 
 	public function callIalman( $table, $args=array() )
 	{
-		if ( $_SERVER['HTTP_HOST']=='local.civiform.it' ) {
+		if ( false /* $_SERVER['HTTP_HOST']=='local.civiform.it' */ ) {
 			$_url = "https://www.civiform.it/ialman_interface/call_maker.php?v=$table";
 			if ( ! empty( $args['id'] ) ) $_url .= '&id='.$args['id'];
 			if ( ! empty( $args['dateupd'] ) ) $_url .= '&dateupd='.$args['dateupd'];
